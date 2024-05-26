@@ -16,6 +16,7 @@
 		CD18C4E02C016CFD00FAB2DA /* SerenityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18C4DF2C016CFD00FAB2DA /* SerenityTests.swift */; };
 		CD18C4EA2C016CFD00FAB2DA /* SerenityUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18C4E92C016CFD00FAB2DA /* SerenityUITests.swift */; };
 		CD18C4EC2C016CFD00FAB2DA /* SerenityUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18C4EB2C016CFD00FAB2DA /* SerenityUITestsLaunchTests.swift */; };
+		CD18C4F92C02AD1700FAB2DA /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18C4F82C02AD1700FAB2DA /* SignUpViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		CD18C4E52C016CFD00FAB2DA /* SerenityUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SerenityUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD18C4E92C016CFD00FAB2DA /* SerenityUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerenityUITests.swift; sourceTree = "<group>"; };
 		CD18C4EB2C016CFD00FAB2DA /* SerenityUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerenityUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		CD18C4F82C02AD1700FAB2DA /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				CD18C4C82C016CFA00FAB2DA /* AppDelegate.swift */,
 				CD18C4CA2C016CFA00FAB2DA /* SceneDelegate.swift */,
 				CD18C4CC2C016CFA00FAB2DA /* ViewController.swift */,
+				CD18C4F82C02AD1700FAB2DA /* SignUpViewController.swift */,
 				CD18C4CE2C016CFA00FAB2DA /* Main.storyboard */,
 				CD18C4D12C016CFD00FAB2DA /* Assets.xcassets */,
 				CD18C4D32C016CFD00FAB2DA /* LaunchScreen.storyboard */,
@@ -260,6 +263,7 @@
 			files = (
 				CD18C4CD2C016CFA00FAB2DA /* ViewController.swift in Sources */,
 				CD18C4C92C016CFA00FAB2DA /* AppDelegate.swift in Sources */,
+				CD18C4F92C02AD1700FAB2DA /* SignUpViewController.swift in Sources */,
 				CD18C4CB2C016CFA00FAB2DA /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
