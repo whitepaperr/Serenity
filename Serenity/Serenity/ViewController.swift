@@ -98,8 +98,15 @@ class ViewController: UIViewController {
 
     @objc private func loginAction() {
         // Handle login logic here
+        transitionToMainPage()
     }
 
+    private func transitionToMainPage() {
+        let mainPageVC = MeditateViewController()
+        mainPageVC.modalPresentationStyle = .fullScreen
+        present(mainPageVC, animated: true, completion: nil)
+    }
+    
     @objc private func showSignUp() {
         let signUpVC = SignUpViewController()
         signUpVC.modalPresentationStyle = .fullScreen

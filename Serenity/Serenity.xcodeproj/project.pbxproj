@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		332397752C0562E6003BCE84 /* MeditateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332397742C0562E6003BCE84 /* MeditateViewController.swift */; };
+		332397772C056304003BCE84 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332397762C056304003BCE84 /* SettingsViewController.swift */; };
+		3323977B2C05707E003BCE84 /* CountdownTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3323977A2C05707E003BCE84 /* CountdownTimer.swift */; };
 		CD18C4C92C016CFA00FAB2DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18C4C82C016CFA00FAB2DA /* AppDelegate.swift */; };
 		CD18C4CB2C016CFA00FAB2DA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18C4CA2C016CFA00FAB2DA /* SceneDelegate.swift */; };
 		CD18C4CD2C016CFA00FAB2DA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18C4CC2C016CFA00FAB2DA /* ViewController.swift */; };
@@ -37,6 +40,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		332397742C0562E6003BCE84 /* MeditateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditateViewController.swift; sourceTree = "<group>"; };
+		332397762C056304003BCE84 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		3323977A2C05707E003BCE84 /* CountdownTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownTimer.swift; sourceTree = "<group>"; };
 		CD18C4C52C016CFA00FAB2DA /* Serenity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Serenity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD18C4C82C016CFA00FAB2DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD18C4CA2C016CFA00FAB2DA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -105,6 +111,9 @@
 				CD18C4CA2C016CFA00FAB2DA /* SceneDelegate.swift */,
 				CD18C4CC2C016CFA00FAB2DA /* ViewController.swift */,
 				CD18C4F82C02AD1700FAB2DA /* SignUpViewController.swift */,
+				332397742C0562E6003BCE84 /* MeditateViewController.swift */,
+				3323977A2C05707E003BCE84 /* CountdownTimer.swift */,
+				332397762C056304003BCE84 /* SettingsViewController.swift */,
 				CD18C4CE2C016CFA00FAB2DA /* Main.storyboard */,
 				CD18C4D12C016CFD00FAB2DA /* Assets.xcassets */,
 				CD18C4D32C016CFD00FAB2DA /* LaunchScreen.storyboard */,
@@ -261,10 +270,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				332397752C0562E6003BCE84 /* MeditateViewController.swift in Sources */,
 				CD18C4CD2C016CFA00FAB2DA /* ViewController.swift in Sources */,
 				CD18C4C92C016CFA00FAB2DA /* AppDelegate.swift in Sources */,
+				3323977B2C05707E003BCE84 /* CountdownTimer.swift in Sources */,
 				CD18C4F92C02AD1700FAB2DA /* SignUpViewController.swift in Sources */,
 				CD18C4CB2C016CFA00FAB2DA /* SceneDelegate.swift in Sources */,
+				332397772C056304003BCE84 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
