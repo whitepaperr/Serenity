@@ -18,7 +18,7 @@ class SignUpViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     let signUpButton = UIButton()
 
     let genderPicker = UIPickerView()
-    let genders = ["Male", "Female", "Transgender", "Non-binary", "Prefer Not to Answer"]
+    let genders = ["Male", "Female", "Non-binary", "Prefer Not to Answer"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
