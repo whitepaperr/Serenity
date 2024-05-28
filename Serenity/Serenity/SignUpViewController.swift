@@ -13,7 +13,6 @@ class SignUpViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     let passwordTextField = UITextField()
     let passwordConfirmTextField = UITextField()
     let nameTextField = UITextField()
-    let birthDateTextField = UITextField()
     let genderTextField = UITextField()
     let signUpButton = UIButton()
 
@@ -32,8 +31,7 @@ class SignUpViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         setupTextField(idTextField, placeholder: "Email")
         setupTextField(passwordTextField, placeholder: "Password", isSecure: true, content: .newPassword)
         setupTextField(passwordConfirmTextField, placeholder: "Confirm Password", isSecure: true, content: .newPassword)
-        setupTextField(nameTextField, placeholder: "Full Name")
-        setupTextField(birthDateTextField, placeholder: "Birth Date (DD/MM/YYYY)")
+        setupTextField(nameTextField, placeholder: "Present Name")
         setupTextField(genderTextField, placeholder: "Gender")
         genderTextField.delegate = self
         setupPicker()
@@ -46,7 +44,7 @@ class SignUpViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         signUpButton.addTarget(self, action: #selector(signUpAction), for: .touchUpInside)
         view.addSubview(signUpButton)
 
-        [idTextField, passwordTextField, passwordConfirmTextField, nameTextField, birthDateTextField, genderTextField].forEach {
+        [idTextField, passwordTextField, passwordConfirmTextField, nameTextField, genderTextField].forEach {
             $0.addTarget(self, action: #selector(editingChanged), for: .editingChanged)
         }
     }
@@ -77,7 +75,6 @@ class SignUpViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
         passwordConfirmTextField.translatesAutoresizingMaskIntoConstraints = false
         nameTextField.translatesAutoresizingMaskIntoConstraints = false
-        birthDateTextField.translatesAutoresizingMaskIntoConstraints = false
         genderTextField.translatesAutoresizingMaskIntoConstraints = false
         signUpButton.translatesAutoresizingMaskIntoConstraints = false
 
@@ -102,12 +99,7 @@ class SignUpViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             nameTextField.widthAnchor.constraint(equalTo: idTextField.widthAnchor),
             nameTextField.heightAnchor.constraint(equalToConstant: 40),
 
-            birthDateTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 20),
-            birthDateTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            birthDateTextField.widthAnchor.constraint(equalTo: idTextField.widthAnchor),
-            birthDateTextField.heightAnchor.constraint(equalToConstant: 40),
-
-            genderTextField.topAnchor.constraint(equalTo: birthDateTextField.bottomAnchor, constant: 20),
+            genderTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 20),
             genderTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             genderTextField.widthAnchor.constraint(equalTo: idTextField.widthAnchor),
             genderTextField.heightAnchor.constraint(equalToConstant: 40),
@@ -120,7 +112,27 @@ class SignUpViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     }
 
     @objc private func signUpAction() {
-        self.dismiss(animated: true, completion: nil)
+        guard let name = nameTextField.text, let email = idTextField.text, let password = passwordTextField.text, let genderPicked = genderTextField.text else {
+            // Must have input has been handled
+            return
+        }
+        let genderMapping: [String: String] = [
+            "Male": "male",
+            "Female": "female",
+            "Non-binary": "non-binary",
+            "Prefer Not to Answer": "None"
+        ]
+        let gender = genderMapping[genderPicked] ?? "unknown"
+        NetworkManager.shared.register(name: name, email: email, password: password, gender: gender) { success in
+            DispatchQueue.main.async {
+                if success {
+                    self.navigationController?.popViewController(animated: true)
+                    self.dismiss(animated: true, completion: nil)
+                } else {
+                    // Error messages have been handled by pop-up window
+                }
+            }
+        }
     }
 
     @objc private func editingChanged(_ textField: UITextField) {
@@ -128,7 +140,6 @@ class SignUpViewController: UIViewController, UIPickerViewDelegate, UIPickerView
                               !(passwordTextField.text?.isEmpty ?? true) &&
                               !(passwordConfirmTextField.text?.isEmpty ?? true) &&
                               !(nameTextField.text?.isEmpty ?? true) &&
-                              !(birthDateTextField.text?.isEmpty ?? true) &&
                               !(genderTextField.text?.isEmpty ?? true)
         signUpButton.isEnabled = allFieldsFilled
         signUpButton.backgroundColor = allFieldsFilled ? UIColor(red: 0.758, green: 0.694, blue: 0.882, alpha: 1.0) : UIColor(red: 0.796, green: 0.764, blue: 0.890, alpha: 1.0)

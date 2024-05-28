@@ -30,12 +30,20 @@ class ViewController: UIViewController {
 
         setupTextField(idTextField, placeholder: "Email")
         setupTextField(passwordTextField, placeholder: "Password", isSecure: true)
+        
+        // TEMP
+        idTextField.text = "admin@admin.com"
+        passwordTextField.text = "secret123"
 
         loginButton.setTitle("Login", for: .normal)
         loginButton.backgroundColor = UIColor(red: 0.796, green: 0.764, blue: 0.890, alpha: 1.0)
         loginButton.layer.cornerRadius = 5
         loginButton.addTarget(self, action: #selector(loginAction), for: .touchUpInside)
-        loginButton.isEnabled = false
+//        loginButton.isEnabled = false
+        
+        // TEMP
+        loginButton.isEnabled = true
+        
         view.addSubview(loginButton)
 
         let signUpText = NSMutableAttributedString(string: "You don't have an account? Then, ", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
@@ -97,8 +105,19 @@ class ViewController: UIViewController {
     }
 
     @objc private func loginAction() {
-        // Handle login logic here
-        transitionToMainPage()
+        guard let email = idTextField.text, let password = passwordTextField.text else {
+            // Must have input has been handled
+            return
+        }
+        NetworkManager.shared.login(email: email, password: password) { success in
+            DispatchQueue.main.async {
+                if success {
+                    self.transitionToMainPage()
+                } else {
+                    // Error messages have been handled by pop-up window
+                }
+            }
+        }
     }
 
     private func transitionToMainPage() {

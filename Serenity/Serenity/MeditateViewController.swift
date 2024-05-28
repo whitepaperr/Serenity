@@ -107,7 +107,6 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
     // TEMP
     @objc func apiTestButtonTapped() {
         let mainViewController = APITestViewController()
-        mainViewController.modalPresentationStyle = .fullScreen
         present(mainViewController, animated: true, completion: nil)
     }
 
