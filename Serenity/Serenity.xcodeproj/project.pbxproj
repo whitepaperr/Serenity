@@ -21,6 +21,8 @@
 		CD18C4EC2C016CFD00FAB2DA /* SerenityUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18C4EB2C016CFD00FAB2DA /* SerenityUITestsLaunchTests.swift */; };
 		CD18C4F92C02AD1700FAB2DA /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18C4F82C02AD1700FAB2DA /* SignUpViewController.swift */; };
 		E86265742C068D7A00375D05 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86265732C068D7A00375D05 /* NetworkManager.swift */; };
+		E86265762C06933500375D05 /* APITestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86265752C06933500375D05 /* APITestViewController.swift */; };
+		E86265782C06935F00375D05 /* DataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86265772C06935F00375D05 /* DataViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +61,8 @@
 		CD18C4EB2C016CFD00FAB2DA /* SerenityUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerenityUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		CD18C4F82C02AD1700FAB2DA /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		E86265732C068D7A00375D05 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		E86265752C06933500375D05 /* APITestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITestViewController.swift; sourceTree = "<group>"; };
+		E86265772C06935F00375D05 /* DataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +125,8 @@
 				CD18C4D32C016CFD00FAB2DA /* LaunchScreen.storyboard */,
 				CD18C4D62C016CFD00FAB2DA /* Info.plist */,
 				E86265732C068D7A00375D05 /* NetworkManager.swift */,
+				E86265752C06933500375D05 /* APITestViewController.swift */,
+				E86265772C06935F00375D05 /* DataViewController.swift */,
 			);
 			path = Serenity;
 			sourceTree = "<group>";
@@ -275,10 +281,12 @@
 			files = (
 				332397752C0562E6003BCE84 /* MeditateViewController.swift in Sources */,
 				CD18C4CD2C016CFA00FAB2DA /* ViewController.swift in Sources */,
+				E86265782C06935F00375D05 /* DataViewController.swift in Sources */,
 				CD18C4C92C016CFA00FAB2DA /* AppDelegate.swift in Sources */,
 				3323977B2C05707E003BCE84 /* CountdownTimer.swift in Sources */,
 				E86265742C068D7A00375D05 /* NetworkManager.swift in Sources */,
 				CD18C4F92C02AD1700FAB2DA /* SignUpViewController.swift in Sources */,
+				E86265762C06933500375D05 /* APITestViewController.swift in Sources */,
 				CD18C4CB2C016CFA00FAB2DA /* SceneDelegate.swift in Sources */,
 				332397772C056304003BCE84 /* SettingsViewController.swift in Sources */,
 			);

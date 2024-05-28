@@ -18,6 +18,10 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
     let resetButton = UIButton()
     let calendarButton = UIButton()
     let musicRecButton = UIButton()
+    
+    // TEMP
+    let apiTestButton = UIButton()
+    
     let settingsButton = UIButton(type: .system)
     let durationPicker = UIPickerView()
 
@@ -90,11 +94,21 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
         
         // Music Recommendation Button
         setupButton(musicRecButton, title: "Music Recs")
+        
+        // TEMP
+        setupButton(apiTestButton, title: "apiTest", action: #selector(apiTestButtonTapped))
 
         // Settings Button
         settingsButton.setImage(UIImage(systemName: "gearshape"), for: .normal)
         settingsButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
         view.addSubview(settingsButton)
+    }
+    
+    // TEMP
+    @objc func apiTestButtonTapped() {
+        let mainViewController = APITestViewController()
+        mainViewController.modalPresentationStyle = .fullScreen
+        present(mainViewController, animated: true, completion: nil)
     }
 
     private func setupButton(_ button: UIButton, title: String, action: Selector? = nil) {
@@ -119,6 +133,10 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
         resetButton.translatesAutoresizingMaskIntoConstraints = false
         calendarButton.translatesAutoresizingMaskIntoConstraints = false
         musicRecButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        // TEMP
+        apiTestButton.translatesAutoresizingMaskIntoConstraints = false
+        
         settingsButton.translatesAutoresizingMaskIntoConstraints = false
 
         let buttonStackView = UIStackView(arrangedSubviews: [startButton, pauseButton, resetButton])
@@ -172,6 +190,12 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
             musicRecButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             musicRecButton.widthAnchor.constraint(equalTo: buttonStackView.widthAnchor),
             musicRecButton.heightAnchor.constraint(equalTo: buttonStackView.heightAnchor),
+            
+            // TEMP
+            apiTestButton.topAnchor.constraint(equalTo: musicRecButton.bottomAnchor, constant: 20),
+            apiTestButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            apiTestButton.widthAnchor.constraint(equalTo: buttonStackView.widthAnchor),
+            apiTestButton.heightAnchor.constraint(equalTo: buttonStackView.heightAnchor),
 
             // Settings Button
             settingsButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
