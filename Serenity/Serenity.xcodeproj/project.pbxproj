@@ -20,6 +20,9 @@
 		CD18C4EA2C016CFD00FAB2DA /* SerenityUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18C4E92C016CFD00FAB2DA /* SerenityUITests.swift */; };
 		CD18C4EC2C016CFD00FAB2DA /* SerenityUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18C4EB2C016CFD00FAB2DA /* SerenityUITestsLaunchTests.swift */; };
 		CD18C4F92C02AD1700FAB2DA /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18C4F82C02AD1700FAB2DA /* SignUpViewController.swift */; };
+		DB1E321B2C07E9EA00D568FF /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1E321A2C07E9EA00D568FF /* CalendarViewController.swift */; };
+		DB1E321D2C07EA0300D568FF /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1E321C2C07EA0300D568FF /* NotesViewController.swift */; };
+		DB1E321F2C07EA1900D568FF /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1E321E2C07EA1900D568FF /* ChartViewController.swift */; };
 		E86265742C068D7A00375D05 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86265732C068D7A00375D05 /* NetworkManager.swift */; };
 		E86265762C06933500375D05 /* APITestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86265752C06933500375D05 /* APITestViewController.swift */; };
 		E86265782C06935F00375D05 /* DataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86265772C06935F00375D05 /* DataViewController.swift */; };
@@ -60,6 +63,9 @@
 		CD18C4E92C016CFD00FAB2DA /* SerenityUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerenityUITests.swift; sourceTree = "<group>"; };
 		CD18C4EB2C016CFD00FAB2DA /* SerenityUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerenityUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		CD18C4F82C02AD1700FAB2DA /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		DB1E321A2C07E9EA00D568FF /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		DB1E321C2C07EA0300D568FF /* NotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewController.swift; sourceTree = "<group>"; };
+		DB1E321E2C07EA1900D568FF /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
 		E86265732C068D7A00375D05 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		E86265752C06933500375D05 /* APITestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITestViewController.swift; sourceTree = "<group>"; };
 		E86265772C06935F00375D05 /* DataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataViewController.swift; sourceTree = "<group>"; };
@@ -119,6 +125,9 @@
 				CD18C4F82C02AD1700FAB2DA /* SignUpViewController.swift */,
 				332397742C0562E6003BCE84 /* MeditateViewController.swift */,
 				3323977A2C05707E003BCE84 /* CountdownTimer.swift */,
+				DB1E321A2C07E9EA00D568FF /* CalendarViewController.swift */,
+				DB1E321C2C07EA0300D568FF /* NotesViewController.swift */,
+				DB1E321E2C07EA1900D568FF /* ChartViewController.swift */,
 				332397762C056304003BCE84 /* SettingsViewController.swift */,
 				CD18C4CE2C016CFA00FAB2DA /* Main.storyboard */,
 				CD18C4D12C016CFD00FAB2DA /* Assets.xcassets */,
@@ -282,10 +291,13 @@
 				332397752C0562E6003BCE84 /* MeditateViewController.swift in Sources */,
 				CD18C4CD2C016CFA00FAB2DA /* ViewController.swift in Sources */,
 				E86265782C06935F00375D05 /* DataViewController.swift in Sources */,
+				DB1E321B2C07E9EA00D568FF /* CalendarViewController.swift in Sources */,
+				DB1E321F2C07EA1900D568FF /* ChartViewController.swift in Sources */,
 				CD18C4C92C016CFA00FAB2DA /* AppDelegate.swift in Sources */,
 				3323977B2C05707E003BCE84 /* CountdownTimer.swift in Sources */,
 				E86265742C068D7A00375D05 /* NetworkManager.swift in Sources */,
 				CD18C4F92C02AD1700FAB2DA /* SignUpViewController.swift in Sources */,
+				DB1E321D2C07EA0300D568FF /* NotesViewController.swift in Sources */,
 				E86265762C06933500375D05 /* APITestViewController.swift in Sources */,
 				CD18C4CB2C016CFA00FAB2DA /* SceneDelegate.swift in Sources */,
 				332397772C056304003BCE84 /* SettingsViewController.swift in Sources */,

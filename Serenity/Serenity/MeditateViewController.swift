@@ -91,6 +91,8 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
 
         // Calendar Button
         setupButton(calendarButton, title: "Calendar")
+        calendarButton.addTarget(self, action: #selector(openCalendar), for: .touchUpInside)
+        view.addSubview(calendarButton)
         
         // Music Recommendation Button
         setupButton(musicRecButton, title: "Music Recs")
@@ -253,6 +255,13 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
         settingsVC.modalPresentationStyle = .fullScreen
         present(settingsVC, animated: true, completion: nil)
     }
+    
+    @objc private func openCalendar() {
+        let calendarVC = CalendarViewController()
+        calendarVC.modalPresentationStyle = .fullScreen
+        present(calendarVC, animated: true, completion: nil)
+    }
+
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 3
