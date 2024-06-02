@@ -262,6 +262,11 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
         present(calendarVC, animated: true, completion: nil)
     }
 
+    @objc private func openMusicRecs() {
+        let musicVC = MusicViewController()
+        musicVC.modalPresentationStyle = .fullScreen
+        present(musicVC, animated: true, completion: nil)
+    }
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 3
