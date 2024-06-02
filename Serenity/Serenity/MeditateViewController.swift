@@ -32,18 +32,13 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
     let hoursOptions = Array(0...23)
     let minutesOptions = Array(0...59)
     let secondsOptions = Array(0...59)
+    let networkManager = NetworkManager.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
         resetTimer()
-        
-        let timer = CountdownTimer(totalTime: 5)  // Set a short duration for testing
-           timer.timerDidFinish = {
-               print("Timer finished")
-           }
-           timer.start()
     }
 
     private func setupViews() {
@@ -232,12 +227,33 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
             countdownTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
         }
     }
+    
+    @objc private func updateTimer() {
+        if currentTime > 0 && isCounterActive {
+            currentTime -= 1
+            updateTimerLabel()
+        } else {
+            countdownTimer?.invalidate()
+            countdownTimer = nil
+            isCounterActive = false
+            stopTimer() // Call stopTimer when the timer runs out
+        }
+    }
 
     @objc private func pauseTimer() {
         countdownTimer?.invalidate()
         countdownTimer = nil
         isCounterActive = false
+        stopTimer() // Call stopTimer when the timer is paused
     }
+
+    @objc private func stopTimer() {
+        if !isCounterActive {
+            // Log the meditation session with the current duration
+            logMeditationSession(duration: totalTime - currentTime)
+        }
+    }
+
 
     @objc private func resetTimer() {
         countdownTimer?.invalidate()
@@ -247,16 +263,38 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
         updateTimerLabel()
     }
 
-    @objc private func updateTimer() {
-        if currentTime > 0 && isCounterActive {
-            currentTime -= 1
-            updateTimerLabel()
-        } else {
-            countdownTimer?.invalidate()
-            countdownTimer = nil
-            isCounterActive = false
+    private func logMeditationSession(duration: Int) {
+            // Get the current date
+            let currentDate = Date()
+            // Format the date as needed by your backend
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let dateString = dateFormatter.string(from: currentDate)
+            // Call the API to log the meditation session
+        networkManager.createData(note: "Meditation session", duration: duration, date: dateString) { success in
+                if success {
+                    print("Meditation session logged successfully.")
+                    NetworkManager.shared.fetchData { data in
+                        DispatchQueue.main.async {
+                            if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                            // Display fetched data in an alert
+                                let alertController = UIAlertController(title: "Fetch Data Successful", message: responseString, preferredStyle: .alert)
+                                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                                self.present(alertController, animated: true, completion: nil)
+                                print("Fetch data successful: \(responseString)")
+                            } else {
+                                NetworkManager.shared.showAlert(message: "Fetch data failed")
+                                print("Fetch data failed")
+                            }
+                        }
+                    }
+                    // You can optionally perform any UI updates or additional actions here
+                } else {
+                    print("Failed to log meditation session.")
+                    // Handle error or display an alert to the user
+                }
+            }
         }
-    }
 
     @objc private func openSettings() {
         let settingsVC = SettingsViewController()
@@ -314,4 +352,5 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
         currentTime = totalTime
         updateTimerLabel()
     }
+
 }

@@ -14,6 +14,9 @@ class CalendarViewController: UIViewController {
     private var selection: UICalendarSelectionSingleDate?
     private let graphProgressButton = UIButton()
     private let dayNotesButton = UIButton()
+    private let backButton = UIButton()
+    
+    private var datesWithEntries: Set<DateComponents> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +24,7 @@ class CalendarViewController: UIViewController {
         createCalendar()
         setupButtons()
         setupSwipeBackGesture()
+        fetchData()
     }
     
     private func setupViews() {
@@ -28,8 +32,30 @@ class CalendarViewController: UIViewController {
         title = "Calendar"
         
         selectedDate = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+        setupBackButton()
     }
     
+    private func setupBackButton() {
+        backButton.setTitle("<", for: .normal)
+        backButton.setTitleColor(UIColor(red: 0.29, green: 0.18, blue: 0.51, alpha: 1.00), for: .normal)
+        backButton.backgroundColor = UIColor(red: 0.90, green: 0.85, blue: 0.96, alpha: 1.00)
+        backButton.layer.cornerRadius = 10
+        backButton.addTarget(self, action: #selector(navigateBack), for: .touchUpInside)
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(backButton)
+        
+        NSLayoutConstraint.activate([
+            backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            backButton.widthAnchor.constraint(equalToConstant: 30),
+            backButton.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+        
+    @objc private func navigateBack() {
+        dismiss(animated: true, completion: nil)
+    }
+
     private func createCalendar() {
         calendarView.translatesAutoresizingMaskIntoConstraints = false
         calendarView.calendar = .current
@@ -44,8 +70,8 @@ class CalendarViewController: UIViewController {
         NSLayoutConstraint.activate([
             calendarView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             calendarView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            calendarView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.7),
-            calendarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+            calendarView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6),
+            calendarView.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 10)
         ])
         
         let selection = UICalendarSelectionSingleDate(delegate: self)
@@ -59,8 +85,8 @@ class CalendarViewController: UIViewController {
     
     private func setupButtons() {
         setupButton(graphProgressButton, title: "Graph Progress Chart", color: UIColor(red: 0.90, green: 0.85, blue: 0.96, alpha: 1.00), action: #selector(openChartView))
-        setupButton(dayNotesButton, title: "Day Notes", color: UIColor(red: 0.73, green: 0.87, blue: 0.97, alpha: 1.00), action: #selector(openDayNotesView))
-                
+        setupButton(dayNotesButton, title: "Day Notes", color: UIColor(red: 0.73, green: 0.87, blue: 0.97, alpha: 1.00), action: #selector(openNotesView))
+
         
         NSLayoutConstraint.activate([
             graphProgressButton.topAnchor.constraint(equalTo: calendarView.bottomAnchor, constant: 20),
@@ -90,6 +116,7 @@ class CalendarViewController: UIViewController {
         chartVC.modalPresentationStyle = .fullScreen
         present(chartVC, animated: true, completion: nil)
     }
+
     
     @objc private func openDayNotesView() {
         openNotesView(for: Date())
@@ -101,10 +128,73 @@ class CalendarViewController: UIViewController {
         noteVC.modalPresentationStyle = .fullScreen
         present(noteVC, animated: true, completion: nil)
     }
+
+    private func fetchData() {
+        NetworkManager.shared.fetchData { data in
+            DispatchQueue.main.async {
+                if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                    guard let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                          let dataArray = jsonObject["data"] as? [[String: Any]] else {
+                        return
+                    }
+                    
+                    self.datesWithEntries.removeAll()
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+                    dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+                    
+                    let currentCalendar = Calendar.current
+                    
+                    for entry in dataArray {
+                        if let dateString = entry["date"] as? String, let date = dateFormatter.date(from: dateString) {
+                            let components = currentCalendar.dateComponents([.year, .month, .day], from: date)
+                           // print("Parsed DateComponents: \(components)") // Debugging statement
+                            self.datesWithEntries.insert(components)
+                        } else {
+                            //print("Failed to parse date: \(entry["date"] ?? "Unknown")") // Debugging statement
+                        }
+                    }
+                    
+                    //print("Dates with entries: \(self.datesWithEntries)") // Debugging statement
+                    self.calendarView.reloadDecorations(forDateComponents: Array(self.datesWithEntries), animated: true)
+                } else {
+                    NetworkManager.shared.showAlert(message: "Fetch data failed")
+                    //print("Fetch data failed")
+                }
+            }
+        }
+    }
+
+    private func updateEntriesForAllMonths(with dataArray: [[String: Any]]) {
+        self.datesWithEntries.removeAll()
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        
+        let currentCalendar = Calendar.current
+        for entry in dataArray {
+            if let dateString = entry["date"] as? String,
+               let date = dateFormatter.date(from: dateString) {
+                let components = currentCalendar.dateComponents([.year, .month, .day], from: date)
+                self.datesWithEntries.insert(components)
+            }
+        }
+        
+        // Debugging: Check for duplicate or missing dates
+        for dateComponents in self.datesWithEntries {
+            print("Adding dot for date: \(dateComponents)")
+        }
+        
+        self.calendarView.reloadDecorations(forDateComponents: Array(self.datesWithEntries), animated: true)
+    }
+
 }
 
 extension CalendarViewController: UICalendarViewDelegate {
     func calendarView(_ calendarView: UICalendarView, decorationFor dateComponents: DateComponents) -> UICalendarView.Decoration? {
+        if datesWithEntries.contains(where: { $0.year == dateComponents.year && $0.month == dateComponents.month && $0.day == dateComponents.day }) {
+            print("Adding dot for date: \(dateComponents)") // Debugging statement
+            return UICalendarView.Decoration.default(color: UIColor(red: 0.66, green: 0.52, blue: 0.84, alpha: 1.00), size: .large)
+        }
         return nil
     }
 }
@@ -120,3 +210,4 @@ extension CalendarViewController: UICalendarSelectionSingleDateDelegate {
         openNotesView(for: date)
     }
 }
+
