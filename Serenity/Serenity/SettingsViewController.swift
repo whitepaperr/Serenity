@@ -11,6 +11,11 @@ import UserNotifications
 class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     let logoImageView = UIImageView()
     let emailLabel = UILabel()
+    let emailInfoLabel = UILabel()
+    let nameLabel = UILabel()
+    let nameInfoLabel = UILabel()
+    let genderLabel = UILabel()
+    let genderInfoLabel = UILabel()
     let passwordLabel = UILabel()
     let passwordTextField = UITextField()
     let savePasswordButton = UIButton()
@@ -23,7 +28,6 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     let closeButton = UIButton(type: .system)
     let logoutButton = UIButton(type: .system)
 
-
     let frequencies = ["Daily", "Weekly", "Monthly"]
     var selectedFrequency = "Daily"
 
@@ -35,11 +39,11 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         datePicker.addTarget(self, action: #selector(notificationsTimeChanged), for: .valueChanged)
         repeatPicker.delegate = self
         repeatPicker.dataSource = self
+        fetchUserInfo()
     }
 
     private func setupViews() {
         view.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.988, alpha: 1.0)
-        title = "Settings"
 
         // Logo
         logoImageView.image = UIImage(named: "Serenity")
@@ -47,12 +51,25 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         view.addSubview(logoImageView)
 
         // Email
-        emailLabel.text = "Email"
-        // Pull from user database?
+        emailLabel.text = "Email:"
         view.addSubview(emailLabel)
+        emailInfoLabel.text = ""
+        view.addSubview(emailInfoLabel)
+        
+        // Name
+        nameLabel.text = "Name:"
+        view.addSubview(nameLabel)
+        nameInfoLabel.text = ""
+        view.addSubview(nameInfoLabel)
+        
+        // Gender
+        genderLabel.text = "Gender:"
+        view.addSubview(genderLabel)
+        genderInfoLabel.text = ""
+        view.addSubview(genderInfoLabel)
 
         // Password Change
-        passwordLabel.text = "Change Password"
+        passwordLabel.text = "Change Password:"
         view.addSubview(passwordLabel)
         
         passwordTextField.placeholder = "Enter new password"
@@ -63,8 +80,7 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         savePasswordButton.setTitle("Save", for: .normal)
         savePasswordButton.backgroundColor = UIColor(red: 0.758, green: 0.694, blue: 0.882, alpha: 1.0)
         savePasswordButton.layer.cornerRadius = 10
-        // Need to implement
-        //savePasswordButton.addTarget(self, action: #selector(savePassword), for: .touchUpInside)
+        savePasswordButton.addTarget(self, action: #selector(savePassword), for: .touchUpInside)
         view.addSubview(savePasswordButton)
 
         // Push Notifications Switch
@@ -82,8 +98,8 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         saveRepeatButton.backgroundColor = UIColor(red: 0.758, green: 0.694, blue: 0.882, alpha: 1.0)
         saveRepeatButton.layer.cornerRadius = 10
         saveRepeatButton.isHidden = true
-        // Need to implement
-        // saveRepeatButton.addTarget(self, action: #selector(saveRepeat), for: .touchUpInside)
+
+        saveRepeatButton.addTarget(self, action: #selector(saveRepeat), for: .touchUpInside)
         view.addSubview(saveRepeatButton)
 
         repeatLabel.text = "Repeat"
@@ -94,20 +110,24 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         view.addSubview(repeatPicker)
 
         // Close Button
-        closeButton.setTitle("X", for: .normal)
+        closeButton.setTitle("Close", for: .normal)
         closeButton.addTarget(self, action: #selector(closeSettings), for: .touchUpInside)
         view.addSubview(closeButton)
         
         // Logout Button
         logoutButton.setTitle("Logout", for: .normal)
-        // Need to implement
-        //logoutButton.addTarget(self, action: #selector(logout), for: .touchUpInside)
+        logoutButton.addTarget(self, action: #selector(logout), for: .touchUpInside)
         view.addSubview(logoutButton)
     }
 
     private func setupConstraints() {
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         emailLabel.translatesAutoresizingMaskIntoConstraints = false
+        emailInfoLabel.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        nameInfoLabel.translatesAutoresizingMaskIntoConstraints = false
+        genderLabel.translatesAutoresizingMaskIntoConstraints = false
+        genderInfoLabel.translatesAutoresizingMaskIntoConstraints = false
         passwordLabel.translatesAutoresizingMaskIntoConstraints = false
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
         savePasswordButton.translatesAutoresizingMaskIntoConstraints = false
@@ -130,10 +150,27 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
             // Email
             emailLabel.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 20),
             emailLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            emailLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            emailInfoLabel.centerYAnchor.constraint(equalTo: emailLabel.centerYAnchor),
+            emailInfoLabel.leadingAnchor.constraint(equalTo: emailLabel.trailingAnchor, constant: 10),
+            emailInfoLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -20),
+
+
+            // Name
+            nameLabel.topAnchor.constraint(equalTo: emailInfoLabel.bottomAnchor, constant: 20),
+            nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            nameInfoLabel.topAnchor.constraint(equalTo: nameLabel.topAnchor),
+            nameInfoLabel.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 10),
+            nameInfoLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            // Gender
+            genderLabel.topAnchor.constraint(equalTo: nameInfoLabel.bottomAnchor, constant: 20),
+            genderLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            genderInfoLabel.topAnchor.constraint(equalTo: genderLabel.topAnchor),
+            genderInfoLabel.leadingAnchor.constraint(equalTo: genderLabel.trailingAnchor, constant: 10),
+            genderInfoLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
 
             // Password Change
-            passwordLabel.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 20),
+            passwordLabel.topAnchor.constraint(equalTo: genderInfoLabel.bottomAnchor, constant: 20),
             passwordLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             passwordLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
 
@@ -173,16 +210,9 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
             saveRepeatButton.heightAnchor.constraint(equalToConstant: 40),
 
             // Close Button
-            closeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
-            //closeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            closeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            closeButton.widthAnchor.constraint(equalToConstant: 100),
-            closeButton.heightAnchor.constraint(equalToConstant: 50),
-            
-            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoImageView.widthAnchor.constraint(equalToConstant: 50),
-            logoImageView.heightAnchor.constraint(equalToConstant: 50),
+            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            closeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            closeButton.heightAnchor.constraint(equalToConstant: 30),
             
             // Logout Button
             logoutButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
@@ -198,7 +228,7 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         repeatLabel.isHidden = !isOn
         repeatPicker.isHidden = !isOn
         saveRepeatButton.isHidden = !isOn
-        if !isOn {
+        if (!isOn) {
             UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
         }
     }
@@ -222,28 +252,60 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         } else {
             dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
         }
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
     }
 
     @objc private func closeSettings() {
         dismiss(animated: true, completion: nil)
     }
     
-    // Need to implement
-    //    @objc private func savePassword() {
-    //
-    //    }
+    @objc private func savePassword() {
+        guard let newPassword = passwordTextField.text, !newPassword.isEmpty else {
+            showAlert(message: "Password cannot be empty")
+            return
+        }
+        NetworkManager.shared.updateUser(name: nameInfoLabel.text ?? "", email: emailInfoLabel.text ?? "", gender: genderInfoLabel.text ?? "", password: newPassword) { success in
+            DispatchQueue.main.async {
+                if success {
+                    self.showAlert(message: "Password changed successfully")
+                    self.passwordTextField.text = ""
+                } else {
+                    self.showAlert(message: "Password change failed")
+                }
+            }
+        }
+    }
     
-    // Need to implement
-    //     @objc private func logout() {
-    //
-    //    }
+    @objc private func logout() {
+        NetworkManager.shared.logout { success in
+            DispatchQueue.main.async {
+                if success {
+                    self.transitionToLogin()
+                } else {
+                    NetworkManager.shared.showAlert(message: "Logout failed")
+                }
+            }
+        }
+    }
     
-    // Need to implement
-    //     @objc private func saveRepeat() {
-    //
-    //    }
+    private func transitionToLogin() {
+        let loginPageVC = ViewController()
+        loginPageVC.modalPresentationStyle = .fullScreen
+        present(loginPageVC, animated: true, completion: nil)
+    }
     
-
+    @objc private func saveRepeat() {
+        // Implementation for saving repeat settings
+    }
+    
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: "Settings", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -262,4 +324,28 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
             scheduleNotification(at: datePicker.date, frequency: selectedFrequency)
         }
     }
+
+    private func fetchUserInfo() {
+        NetworkManager.shared.getCurrentUser { data in
+            DispatchQueue.main.async {
+                if let data = data {
+                    do {
+                        if let jsonObject = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                           let user = jsonObject["user"] as? [String: Any] {
+                            self.emailInfoLabel.text = user["email"] as? String
+                            self.nameInfoLabel.text = user["name"] as? String
+                            self.genderInfoLabel.text = user["gender"] as? String
+                        } else {
+                            self.showAlert(message: "Failed to load user info: Unexpected response format")
+                        }
+                    } catch {
+                        self.showAlert(message: "Failed to load user info: \(error.localizedDescription)")
+                    }
+                } else {
+                    self.showAlert(message: "Failed to load user info: No data received")
+                }
+            }
+        }
+    }
+
 }

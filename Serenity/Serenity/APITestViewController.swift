@@ -63,7 +63,7 @@ class APITestViewController: UIViewController {
         NetworkManager.shared.logout { success in
             DispatchQueue.main.async {
                 if success {
-//                    self.navigationController?.popToRootViewController(animated: true)
+                    self.navigationController?.popToRootViewController(animated: true)
                     self.dismiss(animated: true, completion: nil)
                     self.dismiss(animated: true, completion: nil)
                 } else {
@@ -76,7 +76,7 @@ class APITestViewController: UIViewController {
 
     @objc func manageDataButtonTapped() {
         let dataViewController = DataViewController()
-//        navigationController?.pushViewController(dataViewController, animated: true)
+        navigationController?.pushViewController(dataViewController, animated: true)
         self.present(dataViewController, animated: true, completion: nil)
     }
 }

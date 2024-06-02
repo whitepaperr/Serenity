@@ -176,13 +176,13 @@ class NetworkManager {
     }
     
     // Update User
-    func updateUser(name: String, email: String, gender: String, completion: @escaping (Bool) -> Void) {
+    func updateUser(name: String, email: String, gender: String, password: String, completion: @escaping (Bool) -> Void) {
         let url = URL(string: "\(baseUrl)/users/update-user")!
         var request = URLRequest(url: url)
         request.httpMethod = "PATCH"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let body: [String: Any] = ["name": name, "email": email, "gender": gender]
+        let body: [String: Any] = ["name": name, "email": email, "gender": gender, "password" : password]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in

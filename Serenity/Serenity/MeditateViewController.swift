@@ -38,6 +38,12 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
         setupViews()
         setupConstraints()
         resetTimer()
+        
+        let timer = CountdownTimer(totalTime: 5)  // Set a short duration for testing
+           timer.timerDidFinish = {
+               print("Timer finished")
+           }
+           timer.start()
     }
 
     private func setupViews() {
