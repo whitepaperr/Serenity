@@ -36,6 +36,7 @@ class ChartViewController: UIViewController {
     private var weeklyData: [WeeklyMeditationData] = []
     private var currentDate: Date = Date()
     private let monthLabel = UILabel()
+    private var datesWithEntries: Set<DateComponents> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -153,9 +154,22 @@ class ChartViewController: UIViewController {
     private func updateEntriesForAllMonths(with dataArray: [[String: Any]], for month: Date) {
         var groupedData: [Int: Double] = [:]
         let calendar = Calendar.current
-        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        let currentCalendar = Calendar.current
         // Calculate the first and last day of the month
-        let startDateComponents = calendar.dateComponents([.year, .month], from: month)
+        
+        for entry in dataArray {
+            if let dateString = entry["date"] as? String, let date = dateFormatter.date(from: dateString) {
+                let components = currentCalendar.dateComponents([.year, .month, .day], from: date)
+                print("Parsed DateComponents: \(components)") // Debugging statement
+                self.datesWithEntries.insert(components)
+            } else {
+                //print("Failed to parse date: \(entry["date"] ?? "Unknown")") // Debugging statement
+            }
+        }
+        let startDateComponents = calendar.dateComponents([.year, .month, .day], from: currentDate)
         guard let startDate = calendar.date(from: startDateComponents),
               let endDate = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startDate) else {
             return

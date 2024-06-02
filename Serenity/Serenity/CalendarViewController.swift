@@ -51,11 +51,11 @@ class CalendarViewController: UIViewController {
             backButton.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
-        
+    
     @objc private func navigateBack() {
         dismiss(animated: true, completion: nil)
     }
-
+    
     private func createCalendar() {
         calendarView.translatesAutoresizingMaskIntoConstraints = false
         calendarView.calendar = .current
@@ -86,7 +86,7 @@ class CalendarViewController: UIViewController {
     private func setupButtons() {
         setupButton(graphProgressButton, title: "Graph Progress Chart", color: UIColor(red: 0.90, green: 0.85, blue: 0.96, alpha: 1.00), action: #selector(openChartView))
         setupButton(dayNotesButton, title: "Day Notes", color: UIColor(red: 0.73, green: 0.87, blue: 0.97, alpha: 1.00), action: #selector(openNotesView))
-
+        
         
         NSLayoutConstraint.activate([
             graphProgressButton.topAnchor.constraint(equalTo: calendarView.bottomAnchor, constant: 20),
@@ -116,20 +116,21 @@ class CalendarViewController: UIViewController {
         chartVC.modalPresentationStyle = .fullScreen
         present(chartVC, animated: true, completion: nil)
     }
-
+    
     
     @objc private func openDayNotesView() {
         openNotesView(for: Date())
     }
-
+    
     @objc private func openNotesView(for date: Date) {
         let noteVC = NotesViewController()
         noteVC.selectedDate = date
         noteVC.modalPresentationStyle = .fullScreen
         present(noteVC, animated: true, completion: nil)
     }
-
+    
     private func fetchData() {
+        print("Fetching data...")
         NetworkManager.shared.fetchData { data in
             DispatchQueue.main.async {
                 if let data = data, let responseString = String(data: data, encoding: .utf8) {
@@ -137,35 +138,43 @@ class CalendarViewController: UIViewController {
                           let dataArray = jsonObject["data"] as? [[String: Any]] else {
                         return
                     }
-                    
                     self.datesWithEntries.removeAll()
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
                     dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
                     
                     let currentCalendar = Calendar.current
+                    let currentYear = currentCalendar.component(.year, from: Date())
                     
                     for entry in dataArray {
-                        if let dateString = entry["date"] as? String, let date = dateFormatter.date(from: dateString) {
+                        if let dateString = entry["date"] as? String,
+                           let date = dateFormatter.date(from: dateString) {
+                            print("Processing date: \(dateString)")
                             let components = currentCalendar.dateComponents([.year, .month, .day], from: date)
-                           // print("Parsed DateComponents: \(components)") // Debugging statement
-                            self.datesWithEntries.insert(components)
+                            if components.year == 2023 && components.month == 5 {
+                                print("Found entry for May 2023: \(dateString)")
+                            }
+                            if components.year == currentYear {
+                                self.datesWithEntries.insert(components)
+                                print("Added entry: \(components)")
+                            }
                         } else {
-                            //print("Failed to parse date: \(entry["date"] ?? "Unknown")") // Debugging statement
+                            // Handle parsing failure if needed
+                            print("Parsing failed for entry: \(entry)")
                         }
                     }
-                    
-                    //print("Dates with entries: \(self.datesWithEntries)") // Debugging statement
+                    print("Data fetching completed.")
+                    // Reload decorations after the loop completes
                     self.calendarView.reloadDecorations(forDateComponents: Array(self.datesWithEntries), animated: true)
                 } else {
                     NetworkManager.shared.showAlert(message: "Fetch data failed")
-                    //print("Fetch data failed")
                 }
             }
         }
     }
-
+    
     private func updateEntriesForAllMonths(with dataArray: [[String: Any]]) {
+        print("Updating entries...")
         self.datesWithEntries.removeAll()
         let dateFormatter = ISO8601DateFormatter()
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
@@ -174,29 +183,36 @@ class CalendarViewController: UIViewController {
         for entry in dataArray {
             if let dateString = entry["date"] as? String,
                let date = dateFormatter.date(from: dateString) {
+                print("Processing date: \(dateString)")
                 let components = currentCalendar.dateComponents([.year, .month, .day], from: date)
                 self.datesWithEntries.insert(components)
+                print("Added entry: \(components)")
             }
         }
-        
-        // Debugging: Check for duplicate or missing dates
-        for dateComponents in self.datesWithEntries {
-            print("Adding dot for date: \(dateComponents)")
-        }
-        
+        print("Entries update completed.")
+        // Reload decorations after updating entries
         self.calendarView.reloadDecorations(forDateComponents: Array(self.datesWithEntries), animated: true)
     }
-
 }
 
 extension CalendarViewController: UICalendarViewDelegate {
     func calendarView(_ calendarView: UICalendarView, decorationFor dateComponents: DateComponents) -> UICalendarView.Decoration? {
+        print("Evaluating decoration for date: \(dateComponents)")
+        
+        // Check if the date is in May 2023
+        if dateComponents.year == 2023 && dateComponents.month == 5 {
+            print("Checking decoration for May 2023")
+        }
+        
+        // Check if there is an entry for the current date
         if datesWithEntries.contains(where: { $0.year == dateComponents.year && $0.month == dateComponents.month && $0.day == dateComponents.day }) {
             print("Adding dot for date: \(dateComponents)") // Debugging statement
             return UICalendarView.Decoration.default(color: UIColor(red: 0.66, green: 0.52, blue: 0.84, alpha: 1.00), size: .large)
         }
+        
         return nil
     }
+    
 }
 
 extension CalendarViewController: UICalendarSelectionSingleDateDelegate {
