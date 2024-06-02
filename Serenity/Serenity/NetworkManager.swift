@@ -365,5 +365,41 @@ class NetworkManager {
         }
         task.resume()
     }
-}
+    
+    func updateRepeatFrequency(frequency: String, completion: @escaping (Bool) -> Void) {
+        let url = URL(string: "\(baseUrl)/updateRepeatFrequency")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
 
+        let body: [String: Any] = ["frequency": frequency]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let httpResponse = response as? HTTPURLResponse else {
+                self.showAlert(message: "Update repeat frequency failed: No response from server")
+                completion(false)
+                return
+            }
+            if httpResponse.statusCode == 200 {
+                completion(true)
+            } else {
+                if let data = data {
+                    do {
+                        if let jsonObject = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                           let errorMessage = jsonObject["msg"] as? String {
+                            self.showAlert(message: "Update repeat frequency failed: \(errorMessage)")
+                        } else {
+                            self.showAlert(message: "Update repeat frequency failed: Unexpected response format")
+                        }
+                    } catch {
+                        self.showAlert(message: "Update repeat frequency failed: \(error.localizedDescription)")
+                    }
+                } else {
+                    self.showAlert(message: "Update repeat frequency failed: No data received")
+                }
+                completion(false)
+            }
+        }
+        task.resume()
+    }
+}
