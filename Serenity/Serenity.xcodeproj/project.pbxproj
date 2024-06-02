@@ -22,6 +22,8 @@
 		CD18C4EA2C016CFD00FAB2DA /* SerenityUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18C4E92C016CFD00FAB2DA /* SerenityUITests.swift */; };
 		CD18C4EC2C016CFD00FAB2DA /* SerenityUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18C4EB2C016CFD00FAB2DA /* SerenityUITestsLaunchTests.swift */; };
 		CD18C4F92C02AD1700FAB2DA /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18C4F82C02AD1700FAB2DA /* SignUpViewController.swift */; };
+		CDD10F482C0C262E00F817C9 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD10F472C0C262E00F817C9 /* Note.swift */; };
+		CDD10F4A2C0C2C6400F817C9 /* UIViewControllerSwipeBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD10F492C0C2C6400F817C9 /* UIViewControllerSwipeBack.swift */; };
 		DB1E321B2C07E9EA00D568FF /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1E321A2C07E9EA00D568FF /* CalendarViewController.swift */; };
 		DB1E321D2C07EA0300D568FF /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1E321C2C07EA0300D568FF /* NotesViewController.swift */; };
 		DB1E321F2C07EA1900D568FF /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1E321E2C07EA1900D568FF /* ChartViewController.swift */; };
@@ -67,6 +69,8 @@
 		CD18C4E92C016CFD00FAB2DA /* SerenityUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerenityUITests.swift; sourceTree = "<group>"; };
 		CD18C4EB2C016CFD00FAB2DA /* SerenityUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerenityUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		CD18C4F82C02AD1700FAB2DA /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		CDD10F472C0C262E00F817C9 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		CDD10F492C0C2C6400F817C9 /* UIViewControllerSwipeBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerSwipeBack.swift; sourceTree = "<group>"; };
 		DB1E321A2C07E9EA00D568FF /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		DB1E321C2C07EA0300D568FF /* NotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewController.swift; sourceTree = "<group>"; };
 		DB1E321E2C07EA1900D568FF /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
@@ -128,6 +132,8 @@
 				CD18C4CC2C016CFA00FAB2DA /* ViewController.swift */,
 				70EA1CCD2C0BF6AF00987923 /* Track.swift */,
 				CD18C4F82C02AD1700FAB2DA /* SignUpViewController.swift */,
+				CDD10F492C0C2C6400F817C9 /* UIViewControllerSwipeBack.swift */,
+				CDD10F472C0C262E00F817C9 /* Note.swift */,
 				332397742C0562E6003BCE84 /* MeditateViewController.swift */,
 				3323977A2C05707E003BCE84 /* CountdownTimer.swift */,
 				DB1E321A2C07E9EA00D568FF /* CalendarViewController.swift */,
@@ -304,7 +310,9 @@
 				3323977B2C05707E003BCE84 /* CountdownTimer.swift in Sources */,
 				E86265742C068D7A00375D05 /* NetworkManager.swift in Sources */,
 				CD18C4F92C02AD1700FAB2DA /* SignUpViewController.swift in Sources */,
+				CDD10F4A2C0C2C6400F817C9 /* UIViewControllerSwipeBack.swift in Sources */,
 				DB1E321D2C07EA0300D568FF /* NotesViewController.swift in Sources */,
+				CDD10F482C0C262E00F817C9 /* Note.swift in Sources */,
 				70EA1CCE2C0BF6AF00987923 /* Track.swift in Sources */,
 				E86265762C06933500375D05 /* APITestViewController.swift in Sources */,
 				CD18C4CB2C016CFA00FAB2DA /* SceneDelegate.swift in Sources */,

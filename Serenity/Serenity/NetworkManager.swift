@@ -7,16 +7,28 @@ class NetworkManager {
     
     func showAlert(message: String) {
         DispatchQueue.main.async {
-            if let topController = UIApplication.shared.keyWindow?.rootViewController {
-                var presentedController = topController
-                while let presented = presentedController.presentedViewController {
-                    presentedController = presented
-                }
+            if let topController = self.getTopViewController() {
                 let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                presentedController.present(alert, animated: true, completion: nil)
+                topController.present(alert, animated: true, completion: nil)
             }
         }
+    }
+    
+    private func getTopViewController() -> UIViewController? {
+        guard let window = UIApplication.shared.connectedScenes
+            .filter({ $0.activationState == .foregroundActive })
+            .compactMap({ $0 as? UIWindowScene })
+            .first?.windows
+            .filter({ $0.isKeyWindow }).first else {
+                return nil
+        }
+        
+        var topController = window.rootViewController
+        while let presentedController = topController?.presentedViewController {
+            topController = presentedController
+        }
+        return topController
     }
     
     // Login
@@ -182,7 +194,7 @@ class NetworkManager {
         request.httpMethod = "PATCH"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let body: [String: Any] = ["name": name, "email": email, "gender": gender, "password" : password]
+        let body: [String: Any] = ["name": name, "email": email, "gender": gender, "password": password]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in

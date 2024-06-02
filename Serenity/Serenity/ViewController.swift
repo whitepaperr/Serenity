@@ -19,6 +19,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+        setupSwipeBackGesture()
+        updateLoginButtonState()
     }
 
     private func setupViews() {
@@ -36,14 +38,8 @@ class ViewController: UIViewController {
         passwordTextField.text = "secret123"
 
         loginButton.setTitle("Login", for: .normal)
-        loginButton.backgroundColor = UIColor(red: 0.796, green: 0.764, blue: 0.890, alpha: 1.0)
         loginButton.layer.cornerRadius = 5
         loginButton.addTarget(self, action: #selector(loginAction), for: .touchUpInside)
-//        loginButton.isEnabled = false
-        
-        // TEMP
-        loginButton.isEnabled = true
-        
         view.addSubview(loginButton)
 
         let signUpText = NSMutableAttributedString(string: "You don't have an account? Then, ", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
@@ -106,15 +102,12 @@ class ViewController: UIViewController {
 
     @objc private func loginAction() {
         guard let email = idTextField.text, let password = passwordTextField.text else {
-            // Must have input has been handled
             return
         }
         NetworkManager.shared.login(email: email, password: password) { success in
             DispatchQueue.main.async {
                 if success {
                     self.transitionToMainPage()
-                } else {
-                    // Error messages have been handled by pop-up window
                 }
             }
         }
@@ -133,7 +126,12 @@ class ViewController: UIViewController {
     }
 
     @objc private func editingChanged(_ textField: UITextField) {
-        loginButton.isEnabled = !(idTextField.text?.isEmpty ?? true) && !(passwordTextField.text?.isEmpty ?? true)
-        loginButton.backgroundColor = loginButton.isEnabled ? UIColor(red: 0.758, green: 0.694, blue: 0.882, alpha: 1.0) : UIColor(red: 0.796, green: 0.764, blue: 0.890, alpha: 1.0)
+        updateLoginButtonState()
+    }
+
+    private func updateLoginButtonState() {
+        let isEnabled = !(idTextField.text?.isEmpty ?? true) && !(passwordTextField.text?.isEmpty ?? true)
+        loginButton.isEnabled = isEnabled
+        loginButton.backgroundColor = isEnabled ? UIColor(red: 0.758, green: 0.694, blue: 0.882, alpha: 1.0) : UIColor(red: 0.796, green: 0.764, blue: 0.890, alpha: 1.0)
     }
 }

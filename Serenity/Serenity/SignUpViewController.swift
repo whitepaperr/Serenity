@@ -23,6 +23,7 @@ class SignUpViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+        setupSwipeBackGesture()
     }
 
     private func setupViews() {

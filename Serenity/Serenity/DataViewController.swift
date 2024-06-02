@@ -11,6 +11,7 @@ class DataViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupViews()
+        setupSwipeBackGesture()
     }
     
     func setupViews() {

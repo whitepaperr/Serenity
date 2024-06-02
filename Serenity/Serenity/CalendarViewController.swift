@@ -20,6 +20,7 @@ class CalendarViewController: UIViewController {
         setupViews()
         createCalendar()
         setupButtons()
+        setupSwipeBackGesture()
     }
     
     private func setupViews() {
@@ -58,7 +59,7 @@ class CalendarViewController: UIViewController {
     
     private func setupButtons() {
         setupButton(graphProgressButton, title: "Graph Progress Chart", color: UIColor(red: 0.90, green: 0.85, blue: 0.96, alpha: 1.00), action: #selector(openChartView))
-        setupButton(dayNotesButton, title: "Day Notes", color: UIColor(red: 0.73, green: 0.87, blue: 0.97, alpha: 1.00), action: #selector(openNotesView))
+        setupButton(dayNotesButton, title: "Day Notes", color: UIColor(red: 0.73, green: 0.87, blue: 0.97, alpha: 1.00), action: #selector(openDayNotesView))
                 
         
         NSLayoutConstraint.activate([
@@ -90,8 +91,13 @@ class CalendarViewController: UIViewController {
         present(chartVC, animated: true, completion: nil)
     }
     
-    @objc private func openNotesView() {
+    @objc private func openDayNotesView() {
+        openNotesView(for: Date())
+    }
+
+    @objc private func openNotesView(for date: Date) {
         let noteVC = NotesViewController()
+        noteVC.selectedDate = date
         noteVC.modalPresentationStyle = .fullScreen
         present(noteVC, animated: true, completion: nil)
     }
@@ -105,11 +111,12 @@ extension CalendarViewController: UICalendarViewDelegate {
 
 extension CalendarViewController: UICalendarSelectionSingleDateDelegate {
     func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
-        guard let dateComponents = dateComponents else {
+        guard let dateComponents = dateComponents,
+              let date = Calendar.current.date(from: dateComponents) else {
             return
         }
         
         selectedDate = dateComponents
+        openNotesView(for: date)
     }
 }
-

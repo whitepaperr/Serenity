@@ -9,6 +9,7 @@ class APITestViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupViews()
+        setupSwipeBackGesture()
     }
 
     func setupViews() {

@@ -20,6 +20,7 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
         super.viewDidLoad()
         fetchToken()
         setupViews()
+        setupSwipeBackGesture()
     }
     
     private func setupViews() {
