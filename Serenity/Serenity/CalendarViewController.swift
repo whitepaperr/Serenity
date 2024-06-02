@@ -74,18 +74,17 @@ class CalendarViewController: UIViewController {
             calendarView.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 10)
         ])
         
-        let selection = UICalendarSelectionSingleDate(delegate: self)
+        selection = UICalendarSelectionSingleDate(delegate: self)
         calendarView.selectionBehavior = selection
-        self.selection = selection
         
         if let selectedDate = selectedDate {
-            selection.setSelected(selectedDate, animated: false)
+            selection?.setSelected(selectedDate, animated: false)
         }
     }
     
     private func setupButtons() {
         setupButton(graphProgressButton, title: "Graph Progress Chart", color: UIColor(red: 0.90, green: 0.85, blue: 0.96, alpha: 1.00), action: #selector(openChartView))
-        setupButton(dayNotesButton, title: "Day Notes", color: UIColor(red: 0.73, green: 0.87, blue: 0.97, alpha: 1.00), action: #selector(openNotesView))
+        setupButton(dayNotesButton, title: "Day Notes", color: UIColor(red: 0.73, green: 0.87, blue: 0.97, alpha: 1.00), action: #selector(openDayNotesView))
 
         
         NSLayoutConstraint.activate([
@@ -132,15 +131,14 @@ class CalendarViewController: UIViewController {
     private func fetchData() {
         NetworkManager.shared.fetchData { data in
             DispatchQueue.main.async {
-                if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                if let data = data {
                     guard let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                           let dataArray = jsonObject["data"] as? [[String: Any]] else {
                         return
                     }
                     
                     self.datesWithEntries.removeAll()
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+                    let dateFormatter = ISO8601DateFormatter()
                     dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
                     
                     let currentCalendar = Calendar.current
@@ -148,18 +146,13 @@ class CalendarViewController: UIViewController {
                     for entry in dataArray {
                         if let dateString = entry["date"] as? String, let date = dateFormatter.date(from: dateString) {
                             let components = currentCalendar.dateComponents([.year, .month, .day], from: date)
-                           // print("Parsed DateComponents: \(components)") // Debugging statement
                             self.datesWithEntries.insert(components)
-                        } else {
-                            //print("Failed to parse date: \(entry["date"] ?? "Unknown")") // Debugging statement
                         }
                     }
                     
-                    //print("Dates with entries: \(self.datesWithEntries)") // Debugging statement
                     self.calendarView.reloadDecorations(forDateComponents: Array(self.datesWithEntries), animated: true)
                 } else {
                     NetworkManager.shared.showAlert(message: "Fetch data failed")
-                    //print("Fetch data failed")
                 }
             }
         }
@@ -179,11 +172,6 @@ class CalendarViewController: UIViewController {
             }
         }
         
-        // Debugging: Check for duplicate or missing dates
-        for dateComponents in self.datesWithEntries {
-            print("Adding dot for date: \(dateComponents)")
-        }
-        
         self.calendarView.reloadDecorations(forDateComponents: Array(self.datesWithEntries), animated: true)
     }
 
@@ -192,7 +180,6 @@ class CalendarViewController: UIViewController {
 extension CalendarViewController: UICalendarViewDelegate {
     func calendarView(_ calendarView: UICalendarView, decorationFor dateComponents: DateComponents) -> UICalendarView.Decoration? {
         if datesWithEntries.contains(where: { $0.year == dateComponents.year && $0.month == dateComponents.month && $0.day == dateComponents.day }) {
-            print("Adding dot for date: \(dateComponents)") // Debugging statement
             return UICalendarView.Decoration.default(color: UIColor(red: 0.66, green: 0.52, blue: 0.84, alpha: 1.00), size: .large)
         }
         return nil
@@ -210,4 +197,3 @@ extension CalendarViewController: UICalendarSelectionSingleDateDelegate {
         openNotesView(for: date)
     }
 }
-
