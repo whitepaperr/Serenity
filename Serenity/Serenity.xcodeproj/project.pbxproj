@@ -10,8 +10,8 @@
 		332397752C0562E6003BCE84 /* MeditateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332397742C0562E6003BCE84 /* MeditateViewController.swift */; };
 		332397772C056304003BCE84 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332397762C056304003BCE84 /* SettingsViewController.swift */; };
 		3323977B2C05707E003BCE84 /* CountdownTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3323977A2C05707E003BCE84 /* CountdownTimer.swift */; };
-		70EA1CC82C0BF44400987923 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EA1CC72C0BF44400987923 /* Track.swift */; };
-		70EA1CCA2C0BF45C00987923 /* MusicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EA1CC92C0BF45C00987923 /* MusicViewController.swift */; };
+		70EA1CCC2C0BF69C00987923 /* MusicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EA1CCB2C0BF69C00987923 /* MusicViewController.swift */; };
+		70EA1CCE2C0BF6AF00987923 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EA1CCD2C0BF6AF00987923 /* Track.swift */; };
 		CD18C4C92C016CFA00FAB2DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18C4C82C016CFA00FAB2DA /* AppDelegate.swift */; };
 		CD18C4CB2C016CFA00FAB2DA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18C4CA2C016CFA00FAB2DA /* SceneDelegate.swift */; };
 		CD18C4CD2C016CFA00FAB2DA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18C4CC2C016CFA00FAB2DA /* ViewController.swift */; };
@@ -51,8 +51,8 @@
 		332397742C0562E6003BCE84 /* MeditateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditateViewController.swift; sourceTree = "<group>"; };
 		332397762C056304003BCE84 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		3323977A2C05707E003BCE84 /* CountdownTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownTimer.swift; sourceTree = "<group>"; };
-		70EA1CC72C0BF44400987923 /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Track.swift; path = "../../../449/Serenity copy/Serenity/Serenity/Track.swift"; sourceTree = "<group>"; };
-		70EA1CC92C0BF45C00987923 /* MusicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicViewController.swift; path = "../../../449/Serenity copy/Serenity/Serenity/MusicViewController.swift"; sourceTree = "<group>"; };
+		70EA1CCB2C0BF69C00987923 /* MusicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicViewController.swift; sourceTree = "<group>"; };
+		70EA1CCD2C0BF6AF00987923 /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		CD18C4C52C016CFA00FAB2DA /* Serenity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Serenity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD18C4C82C016CFA00FAB2DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD18C4CA2C016CFA00FAB2DA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -126,14 +126,14 @@
 				CD18C4C82C016CFA00FAB2DA /* AppDelegate.swift */,
 				CD18C4CA2C016CFA00FAB2DA /* SceneDelegate.swift */,
 				CD18C4CC2C016CFA00FAB2DA /* ViewController.swift */,
-				70EA1CC72C0BF44400987923 /* Track.swift */,
+				70EA1CCD2C0BF6AF00987923 /* Track.swift */,
 				CD18C4F82C02AD1700FAB2DA /* SignUpViewController.swift */,
 				332397742C0562E6003BCE84 /* MeditateViewController.swift */,
 				3323977A2C05707E003BCE84 /* CountdownTimer.swift */,
 				DB1E321A2C07E9EA00D568FF /* CalendarViewController.swift */,
 				DB1E321C2C07EA0300D568FF /* NotesViewController.swift */,
 				DB1E321E2C07EA1900D568FF /* ChartViewController.swift */,
-				70EA1CC92C0BF45C00987923 /* MusicViewController.swift */,
+				70EA1CCB2C0BF69C00987923 /* MusicViewController.swift */,
 				332397762C056304003BCE84 /* SettingsViewController.swift */,
 				CD18C4CE2C016CFA00FAB2DA /* Main.storyboard */,
 				CD18C4D12C016CFD00FAB2DA /* Assets.xcassets */,
@@ -298,17 +298,17 @@
 				CD18C4CD2C016CFA00FAB2DA /* ViewController.swift in Sources */,
 				E86265782C06935F00375D05 /* DataViewController.swift in Sources */,
 				DB1E321B2C07E9EA00D568FF /* CalendarViewController.swift in Sources */,
+				70EA1CCC2C0BF69C00987923 /* MusicViewController.swift in Sources */,
 				DB1E321F2C07EA1900D568FF /* ChartViewController.swift in Sources */,
 				CD18C4C92C016CFA00FAB2DA /* AppDelegate.swift in Sources */,
-				70EA1CCA2C0BF45C00987923 /* MusicViewController.swift in Sources */,
 				3323977B2C05707E003BCE84 /* CountdownTimer.swift in Sources */,
 				E86265742C068D7A00375D05 /* NetworkManager.swift in Sources */,
 				CD18C4F92C02AD1700FAB2DA /* SignUpViewController.swift in Sources */,
 				DB1E321D2C07EA0300D568FF /* NotesViewController.swift in Sources */,
+				70EA1CCE2C0BF6AF00987923 /* Track.swift in Sources */,
 				E86265762C06933500375D05 /* APITestViewController.swift in Sources */,
 				CD18C4CB2C016CFA00FAB2DA /* SceneDelegate.swift in Sources */,
 				332397772C056304003BCE84 /* SettingsViewController.swift in Sources */,
-				70EA1CC82C0BF44400987923 /* Track.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
