@@ -102,6 +102,8 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
         
         // Music Recommendation Button
         setupButton(musicRecButton, title: "Music Recs")
+        musicRecButton.addTarget(self, action: #selector(openMusicRecs), for: .touchUpInside)
+        view.addSubview(calendarButton)
         
         // TEMP
         setupButton(apiTestButton, title: "apiTest", action: #selector(apiTestButtonTapped))
