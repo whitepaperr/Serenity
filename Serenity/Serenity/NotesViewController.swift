@@ -32,7 +32,16 @@ class NotesViewController: UIViewController {
         view.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.988, alpha: 1.0)
         
         dateLabel.font = UIFont.systemFont(ofSize: 20)
+        dateLabel.textColor = UIColor(red: 0.64, green: 0.57, blue: 0.75, alpha: 1.00)
         dateLabel.textAlignment = .center
+        if let selectedDate = selectedDate {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "LLLL d, yyyy"
+            if let date = Calendar.current.date(from: selectedDate) {
+                let formattedDate = formatter.string(from: date)
+                dateLabel.text = formattedDate
+            }
+        }
         view.addSubview(dateLabel)
         
         textView.backgroundColor = .white
@@ -85,7 +94,7 @@ class NotesViewController: UIViewController {
             textView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 30),
             textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            textView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.7),
+            textView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.67),
             
             saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
             saveButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -10),
