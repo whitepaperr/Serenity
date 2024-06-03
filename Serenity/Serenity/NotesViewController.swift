@@ -14,17 +14,20 @@ class NotesViewController: UIViewController {
     private let editButton = UIButton()
     private let dateLabel = UILabel()
     private var isEditingNote = false
-    
-    var selectedDate: Date?
-    
+    var thisDate: String?
+    var thisDuration: Int?
+    var entryID: String?
+    var selectedDate: DateComponents?
+    var noteText: String?
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
-        loadNote()
+        fetchAndDisplayData()
         setupSwipeBackGesture()
     }
-
+    
     private func setupViews() {
         view.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.988, alpha: 1.0)
         
@@ -37,11 +40,26 @@ class NotesViewController: UIViewController {
         textView.isEditable = false
         view.addSubview(textView)
         
-        setupButton(saveButton, title: "Save", color: UIColor(red: 0.758, green: 0.694, blue: 0.882, alpha: 1.0), action: #selector(saveNote))
-        saveButton.isHidden = true
+        // Add the back button
+        let backButton = UIButton(type: .system)
+        backButton.setTitle("<", for: .normal)
+        backButton.setTitleColor(UIColor(red: 0.29, green: 0.18, blue: 0.51, alpha: 1.00), for: .normal)
+        backButton.backgroundColor = UIColor(red: 0.90, green: 0.85, blue: 0.96, alpha: 1.00)
+        backButton.layer.cornerRadius = 10
+        backButton.addTarget(self, action: #selector(navigateBack), for: .touchUpInside)
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(backButton)
         
-        setupButton(editButton, title: "Edit", color: UIColor(red: 0.796, green: 0.764, blue: 0.890, alpha: 1.0), action: #selector(editNote))
-        editButton.isHidden = true
+        setupButton(saveButton, title: "Save", color: UIColor(red: 0.31, green: 0.51, blue: 0.75, alpha: 1.00), action: #selector(saveNote))
+        setupButton(editButton, title: "Edit", color: UIColor(red: 0.73, green: 0.87, blue: 0.97, alpha: 1.00), action: #selector(editNote))
+        
+        // Add constraints for the back button
+        NSLayoutConstraint.activate([
+            backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            backButton.widthAnchor.constraint(equalToConstant: 30),
+            backButton.heightAnchor.constraint(equalToConstant: 30)
+        ])
     }
     
     private func setupButton(_ button: UIButton, title: String, color: UIColor, action: Selector) {
@@ -52,7 +70,7 @@ class NotesViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(button)
     }
-
+    
     private func setupConstraints() {
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -64,59 +82,129 @@ class NotesViewController: UIViewController {
             dateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             dateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
-            textView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 20),
+            textView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 30),
             textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             textView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.7),
             
-            saveButton.topAnchor.constraint(equalTo: textView.bottomAnchor, constant: 20),
-            saveButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
+            saveButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -10),
+            saveButton.widthAnchor.constraint(equalToConstant: 100),
             saveButton.heightAnchor.constraint(equalToConstant: 50),
             
-            editButton.topAnchor.constraint(equalTo: textView.bottomAnchor, constant: 20),
-            editButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            editButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            editButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
+            editButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 10),
+            editButton.widthAnchor.constraint(equalToConstant: 100),
             editButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
+    
+    @objc private func navigateBack() {
+        dismiss(animated: true, completion: nil)
+    }
 
-    private func loadNote() {
-        guard let selectedDate = selectedDate else { return }
-        dateLabel.text = formatDate(selectedDate)
+    private func fetchAndDisplayData() {
+        guard let selectedDate = selectedDate else {
+            print("Selected date is nil")
+            return
+        }
         
-        if let note = NotesDataManager.shared.getNoteForDate(selectedDate) {
-            textView.text = note.text
-            textView.isEditable = false
-            saveButton.isHidden = true
-            editButton.isHidden = false
-        } else {
-            textView.text = ""
-            textView.isEditable = true
-            textView.becomeFirstResponder()
-            saveButton.isHidden = false
-            editButton.isHidden = true
+        NetworkManager.shared.fetchData { data in
+            DispatchQueue.main.async {
+                if let data = data,
+                   let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let dataArray = jsonObject["data"] as? [[String: Any]] {
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+                    dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+                    
+                    var entryFound = false
+                    
+                    for entry in dataArray {
+                        if let dateString = entry["date"] as? String,
+                           let date = dateFormatter.date(from: dateString) {
+                            let entryDateComponents = Calendar.current.dateComponents([.year, .month, .day], from: date)
+                            if entryDateComponents.year == selectedDate.year &&
+                               entryDateComponents.month == selectedDate.month &&
+                               entryDateComponents.day == selectedDate.day {
+                                print("Data entry for selected date: \(entry)")
+                                entryFound = true
+                                // Display data on UI
+                                
+                                // Extract the entry details as fields
+                                if let note = entry["note"] as? String {
+                                    self.noteText = note
+                                    self.textView.text = note
+                                }
+                                if let thisDate = entry["date"] as? String {
+                                    self.thisDate = thisDate
+                                }
+                                if let thisDuration = entry["duration"] as? Int {
+                                    self.thisDuration = thisDuration
+                                } else {
+                                    print("No note found for the selected date.")
+                                }
+                                
+                                // Extract and return the _id of the data entry
+                                if let entryID = entry["_id"] as? String {
+                                    self.entryID = entryID
+                                }
+                                
+                                return
+                            }
+                        }
+                    }
+                    
+                    if !entryFound {
+                        print("No data entry found for the selected date.")
+                    }
+                } else {
+                    NetworkManager.shared.showAlert(message: "Fetch data failed")
+                }
+            }
         }
     }
-    
+
+
     @objc private func saveNote() {
-        guard let selectedDate = selectedDate else { return }
-        NotesDataManager.shared.saveNoteForDate(selectedDate, text: textView.text)
-        textView.isEditable = false
-        saveButton.isHidden = true
-        editButton.isHidden = false
+        //if you hit save note before editing, shouldn't do anything
     }
-    
+            
     @objc private func editNote() {
         textView.isEditable = true
-        textView.becomeFirstResponder()
         saveButton.isHidden = false
         editButton.isHidden = true
+        
+        saveButton.removeTarget(self, action: #selector(saveNote), for: .touchUpInside)
+        saveButton.addTarget(self, action: #selector(saveEditedNote), for: .touchUpInside)
     }
+
     
-    private func formatDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        return formatter.string(from: date)
+    @objc private func saveEditedNote() {
+        noteText = textView.text
+
+        if let editedNote = noteText {
+            if let entryID = entryID {
+                if let duration = thisDuration { //need to safely unwrap from Int? to Int
+                    NetworkManager.shared.updateData(id: entryID, note: editedNote, duration: duration, date: thisDate ?? "", completion: { success in
+                        if success {
+                        } else {
+                            print("failure")
+                        }
+                    })
+                } else {
+                    print("Duration is nil")
+                }
+            }
+        }
+        
+        textView.isEditable = false
+        
+        // Hide the save button and show the edit button
+        saveButton.isHidden = true
+        editButton.isHidden = false
+        
+        saveButton.removeTarget(self, action: #selector(saveEditedNote), for: .touchUpInside)
+        saveButton.addTarget(self, action: #selector(saveNote), for: .touchUpInside)
     }
 }

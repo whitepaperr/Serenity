@@ -24,7 +24,7 @@ struct BarChart: View {
                 x: .value("Week", item.week),
                 y: .value("Duration (minutes)", item.duration)
             )
-            .foregroundStyle(Color(red: 0.73, green: 0.87, blue: 0.97))
+            .foregroundStyle(Color(red: 0.31, green: 0.51, blue: 0.75))
         }
         .chartXAxisLabel("Weeks")
         .chartYAxisLabel("Minutes")

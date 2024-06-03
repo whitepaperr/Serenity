@@ -78,8 +78,13 @@ class CalendarViewController: UIViewController {
         calendarView.selectionBehavior = selection
         self.selection = selection
         
+        // Set the initial selection to the current date
         if let selectedDate = selectedDate {
             selection.setSelected(selectedDate, animated: false)
+        } else {
+            let currentDate = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+            selection.setSelected(currentDate, animated: false)
+            selectedDate = currentDate // Update the selectedDate property
         }
     }
     
@@ -117,14 +122,10 @@ class CalendarViewController: UIViewController {
         present(chartVC, animated: true, completion: nil)
     }
 
-    
-    @objc private func openDayNotesView() {
-        openNotesView(for: Date())
-    }
-
-    @objc private func openNotesView(for date: Date) {
+    @objc private func openNotesView() {
+        guard let selectedDate = selectedDate else { return }
         let noteVC = NotesViewController()
-        noteVC.selectedDate = date
+        noteVC.selectedDate = selectedDate
         noteVC.modalPresentationStyle = .fullScreen
         present(noteVC, animated: true, completion: nil)
     }
@@ -207,6 +208,7 @@ extension CalendarViewController: UICalendarSelectionSingleDateDelegate {
         }
         
         selectedDate = dateComponents
-        openNotesView(for: date)
+        print("Selected date: \(date)") // Print the selected date
     }
 }
+
