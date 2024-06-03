@@ -17,6 +17,8 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let meditationGif = UIImage.gifImageWithName("meditation")
+        logoImageView.image = meditationGif
         setupViews()
         setupConstraints()
         setupSwipeBackGesture()
@@ -24,9 +26,9 @@ class ViewController: UIViewController {
     }
 
     private func setupViews() {
-        view.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.988, alpha: 1.0)
+        view.backgroundColor = UIColor(red: 0.94, green: 0.91, blue: 0.90, alpha: 1.00)
 
-        logoImageView.image = UIImage(named: "Serenity")
+        //logoImageView.image = UIImage(named: "Serenity")
         logoImageView.contentMode = .scaleAspectFit
         view.addSubview(logoImageView)
 
@@ -77,8 +79,8 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoImageView.widthAnchor.constraint(equalToConstant: 150),
-            logoImageView.heightAnchor.constraint(equalToConstant: 150),
+            logoImageView.widthAnchor.constraint(equalToConstant: 300),
+            logoImageView.heightAnchor.constraint(equalToConstant: 300),
 
             idTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 30),
             idTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),

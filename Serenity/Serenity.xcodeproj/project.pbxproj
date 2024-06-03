@@ -26,6 +26,8 @@
 		DB1E321B2C07E9EA00D568FF /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1E321A2C07E9EA00D568FF /* CalendarViewController.swift */; };
 		DB1E321D2C07EA0300D568FF /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1E321C2C07EA0300D568FF /* NotesViewController.swift */; };
 		DB1E321F2C07EA1900D568FF /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1E321E2C07EA1900D568FF /* ChartViewController.swift */; };
+		DB66A5B42C0E745F00C7ADD2 /* meditation.gif in Resources */ = {isa = PBXBuildFile; fileRef = DB66A5B32C0E745E00C7ADD2 /* meditation.gif */; };
+		DB66A5B62C0E749700C7ADD2 /* gifLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66A5B52C0E749700C7ADD2 /* gifLoader.swift */; };
 		E86265742C068D7A00375D05 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86265732C068D7A00375D05 /* NetworkManager.swift */; };
 		E86265762C06933500375D05 /* APITestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86265752C06933500375D05 /* APITestViewController.swift */; };
 		E86265782C06935F00375D05 /* DataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86265772C06935F00375D05 /* DataViewController.swift */; };
@@ -72,6 +74,8 @@
 		DB1E321A2C07E9EA00D568FF /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		DB1E321C2C07EA0300D568FF /* NotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewController.swift; sourceTree = "<group>"; };
 		DB1E321E2C07EA1900D568FF /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
+		DB66A5B32C0E745E00C7ADD2 /* meditation.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = meditation.gif; sourceTree = "<group>"; };
+		DB66A5B52C0E749700C7ADD2 /* gifLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gifLoader.swift; sourceTree = "<group>"; };
 		E86265732C068D7A00375D05 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		E86265752C06933500375D05 /* APITestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITestViewController.swift; sourceTree = "<group>"; };
 		E86265772C06935F00375D05 /* DataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataViewController.swift; sourceTree = "<group>"; };
@@ -128,6 +132,7 @@
 				CD18C4C82C016CFA00FAB2DA /* AppDelegate.swift */,
 				CD18C4CA2C016CFA00FAB2DA /* SceneDelegate.swift */,
 				CD18C4CC2C016CFA00FAB2DA /* ViewController.swift */,
+				DB66A5B52C0E749700C7ADD2 /* gifLoader.swift */,
 				70EA1CCD2C0BF6AF00987923 /* Track.swift */,
 				CD18C4F82C02AD1700FAB2DA /* SignUpViewController.swift */,
 				CDD10F492C0C2C6400F817C9 /* UIViewControllerSwipeBack.swift */,
@@ -139,6 +144,7 @@
 				70EA1CCB2C0BF69C00987923 /* MusicViewController.swift */,
 				332397762C056304003BCE84 /* SettingsViewController.swift */,
 				CD18C4CE2C016CFA00FAB2DA /* Main.storyboard */,
+				DB66A5B32C0E745E00C7ADD2 /* meditation.gif */,
 				CD18C4D12C016CFD00FAB2DA /* Assets.xcassets */,
 				CD18C4D32C016CFD00FAB2DA /* LaunchScreen.storyboard */,
 				CD18C4D62C016CFD00FAB2DA /* Info.plist */,
@@ -270,6 +276,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB66A5B42C0E745F00C7ADD2 /* meditation.gif in Resources */,
 				CD18C4D22C016CFD00FAB2DA /* Assets.xcassets in Resources */,
 				CD18C4D52C016CFD00FAB2DA /* Base in Resources */,
 				CD18C4D02C016CFA00FAB2DA /* Base in Resources */,
@@ -303,6 +310,7 @@
 				DB1E321B2C07E9EA00D568FF /* CalendarViewController.swift in Sources */,
 				70EA1CCC2C0BF69C00987923 /* MusicViewController.swift in Sources */,
 				DB1E321F2C07EA1900D568FF /* ChartViewController.swift in Sources */,
+				DB66A5B62C0E749700C7ADD2 /* gifLoader.swift in Sources */,
 				CD18C4C92C016CFA00FAB2DA /* AppDelegate.swift in Sources */,
 				3323977B2C05707E003BCE84 /* CountdownTimer.swift in Sources */,
 				E86265742C068D7A00375D05 /* NetworkManager.swift in Sources */,
