@@ -10,16 +10,17 @@ import UIKit
 class NotesViewController: UIViewController {
     
     private let textView = UITextView()
-    private let saveButton = UIButton()
-    private let editButton = UIButton()
     private let dateLabel = UILabel()
+    private var saveButton: UIButton?
+    private var editButton: UIButton?
     private var isEditingNote = false
     var thisDate: String?
     var thisDuration: Int?
     var entryID: String?
     var selectedDate: DateComponents?
     var noteText: String?
-   
+    private var didMeditateToday = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -59,9 +60,6 @@ class NotesViewController: UIViewController {
         backButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(backButton)
         
-        setupButton(saveButton, title: "Save", color: UIColor(red: 0.31, green: 0.51, blue: 0.75, alpha: 1.00), action: #selector(saveNote))
-        setupButton(editButton, title: "Edit", color: UIColor(red: 0.73, green: 0.87, blue: 0.97, alpha: 1.00), action: #selector(editNote))
-        
         // Add constraints for the back button
         NSLayoutConstraint.activate([
             backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
@@ -83,8 +81,6 @@ class NotesViewController: UIViewController {
     private func setupConstraints() {
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         textView.translatesAutoresizingMaskIntoConstraints = false
-        saveButton.translatesAutoresizingMaskIntoConstraints = false
-        editButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             dateLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -94,8 +90,20 @@ class NotesViewController: UIViewController {
             textView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 30),
             textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            textView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.67),
-            
+            textView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.67)
+        ])
+    }
+    
+    private func addButtons() {
+        saveButton = UIButton()
+        editButton = UIButton()
+        
+        guard let saveButton = saveButton, let editButton = editButton else { return }
+        
+        setupButton(saveButton, title: "Save", color: UIColor(red: 0.31, green: 0.51, blue: 0.75, alpha: 1.00), action: #selector(saveNote))
+        setupButton(editButton, title: "Edit", color: UIColor(red: 0.73, green: 0.87, blue: 0.97, alpha: 1.00), action: #selector(editNote))
+        
+        NSLayoutConstraint.activate([
             saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
             saveButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -10),
             saveButton.widthAnchor.constraint(equalToConstant: 100),
@@ -150,6 +158,7 @@ class NotesViewController: UIViewController {
                                 }
                                 if let thisDuration = entry["duration"] as? Int {
                                     self.thisDuration = thisDuration
+                                    self.didMeditateToday = thisDuration > 0
                                 } else {
                                     print("No note found for the selected date.")
                                 }
@@ -159,6 +168,9 @@ class NotesViewController: UIViewController {
                                     self.entryID = entryID
                                 }
                                 
+                                if self.didMeditateToday {
+                                    self.addButtons()
+                                }
                                 return
                             }
                         }
@@ -180,12 +192,16 @@ class NotesViewController: UIViewController {
     }
             
     @objc private func editNote() {
-        textView.isEditable = true
-        saveButton.isHidden = false
-        editButton.isHidden = true
+        guard didMeditateToday else {
+            return
+        }
         
-        saveButton.removeTarget(self, action: #selector(saveNote), for: .touchUpInside)
-        saveButton.addTarget(self, action: #selector(saveEditedNote), for: .touchUpInside)
+        textView.isEditable = true
+        saveButton?.isHidden = false
+        editButton?.isHidden = true
+        
+        saveButton?.removeTarget(self, action: #selector(saveNote), for: .touchUpInside)
+        saveButton?.addTarget(self, action: #selector(saveEditedNote), for: .touchUpInside)
     }
 
     
@@ -210,10 +226,10 @@ class NotesViewController: UIViewController {
         textView.isEditable = false
         
         // Hide the save button and show the edit button
-        saveButton.isHidden = true
-        editButton.isHidden = false
+        saveButton?.isHidden = true
+        editButton?.isHidden = false
         
-        saveButton.removeTarget(self, action: #selector(saveEditedNote), for: .touchUpInside)
-        saveButton.addTarget(self, action: #selector(saveNote), for: .touchUpInside)
+        saveButton?.removeTarget(self, action: #selector(saveEditedNote), for: .touchUpInside)
+        saveButton?.addTarget(self, action: #selector(saveNote), for: .touchUpInside)
     }
 }
