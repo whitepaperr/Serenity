@@ -264,37 +264,34 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
     }
 
     private func logMeditationSession(duration: Int) {
-            // Get the current date
-            let currentDate = Date()
-            // Format the date as needed by your backend
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            let dateString = dateFormatter.string(from: currentDate)
-            // Call the API to log the meditation session
+        // Get the current date and time
+        let currentDate = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" // ISO 8601 format with time
+        let dateString = dateFormatter.string(from: currentDate)
+        
+        // Call the API to log the meditation session
         networkManager.createData(note: "Meditation session", duration: duration, date: dateString) { success in
-                if success {
-                    print("Meditation session logged successfully.")
-                    NetworkManager.shared.fetchData { data in
-                        DispatchQueue.main.async {
-                            if let data = data, let responseString = String(data: data, encoding: .utf8) {
+            if success {
+                print("Meditation session logged successfully.")
+                NetworkManager.shared.fetchData { data in
+                    DispatchQueue.main.async {
+                        if let data = data, let responseString = String(data: data, encoding: .utf8) {
                             // Display fetched data in an alert
-                                let alertController = UIAlertController(title: "Fetch Data Successful", message: responseString, preferredStyle: .alert)
-                                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                                self.present(alertController, animated: true, completion: nil)
-                                print("Fetch data successful: \(responseString)")
-                            } else {
-                                NetworkManager.shared.showAlert(message: "Fetch data failed")
-                                print("Fetch data failed")
-                            }
+                            print("Fetch data successful: \(responseString)")
+                        } else {
+                            NetworkManager.shared.showAlert(message: "Fetch data failed")
+                            print("Fetch data failed")
                         }
                     }
-                    // You can optionally perform any UI updates or additional actions here
-                } else {
-                    print("Failed to log meditation session.")
-                    // Handle error or display an alert to the user
                 }
+                // You can optionally perform any UI updates or additional actions here
+            } else {
+                print("Failed to log meditation session.")
+                // Handle error or display an alert to the user
             }
         }
+    }
 
     @objc private func openSettings() {
         let settingsVC = SettingsViewController()
