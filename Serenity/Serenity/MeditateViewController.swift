@@ -20,7 +20,7 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
     let musicRecButton = UIButton()
     
     // TEMP
-    let apiTestButton = UIButton()
+    // let apiTestButton = UIButton()
     
     let settingsButton = UIButton(type: .system)
     let durationPicker = UIPickerView()
@@ -101,7 +101,7 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
         view.addSubview(calendarButton)
         
         // TEMP
-        setupButton(apiTestButton, title: "apiTest", action: #selector(apiTestButtonTapped))
+        // setupButton(apiTestButton, title: "apiTest", action: #selector(apiTestButtonTapped))
 
         // Settings Button
         settingsButton.setImage(UIImage(systemName: "gearshape"), for: .normal)
@@ -139,7 +139,7 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
         musicRecButton.translatesAutoresizingMaskIntoConstraints = false
         
         // TEMP
-        apiTestButton.translatesAutoresizingMaskIntoConstraints = false
+       // apiTestButton.translatesAutoresizingMaskIntoConstraints = false
         
         settingsButton.translatesAutoresizingMaskIntoConstraints = false
 
@@ -196,10 +196,10 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
             musicRecButton.heightAnchor.constraint(equalTo: buttonStackView.heightAnchor),
             
             // TEMP
-            apiTestButton.topAnchor.constraint(equalTo: musicRecButton.bottomAnchor, constant: 20),
-            apiTestButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            apiTestButton.widthAnchor.constraint(equalTo: buttonStackView.widthAnchor),
-            apiTestButton.heightAnchor.constraint(equalTo: buttonStackView.heightAnchor),
+//            apiTestButton.topAnchor.constraint(equalTo: musicRecButton.bottomAnchor, constant: 20),
+//            apiTestButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            apiTestButton.widthAnchor.constraint(equalTo: buttonStackView.widthAnchor),
+//            apiTestButton.heightAnchor.constraint(equalTo: buttonStackView.heightAnchor),
 
             // Settings Button
             settingsButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),

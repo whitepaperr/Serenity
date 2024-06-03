@@ -43,7 +43,17 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.988, alpha: 1.0)
         view.addSubview(tableView)
-                
+        
+        // Add the back button
+        let backButton = UIButton(type: .system)
+        backButton.setTitle("<", for: .normal)
+        backButton.setTitleColor(UIColor(red: 0.29, green: 0.18, blue: 0.51, alpha: 1.00), for: .normal)
+        backButton.backgroundColor = UIColor(red: 0.90, green: 0.85, blue: 0.96, alpha: 1.00)
+        backButton.layer.cornerRadius = 10
+        backButton.addTarget(self, action: #selector(navigateBack), for: .touchUpInside)
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(backButton)
+     
         NSLayoutConstraint.activate([
             logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -57,7 +67,12 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
             tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            backButton.widthAnchor.constraint(equalToConstant: 30),
+            backButton.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
     
@@ -211,5 +226,7 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
         present(alertController, animated: true, completion: nil)
     }
     
-    
+    @objc private func navigateBack() {
+        dismiss(animated: true, completion: nil)
+    }    
 }

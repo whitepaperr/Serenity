@@ -33,11 +33,16 @@ struct BarChart: View {
 }
 
 class ChartViewController: UIViewController {
-    private var weeklyData: [WeeklyMeditationData] = []
+    private var weeklyData: [WeeklyMeditationData] = [] {
+        didSet {
+            updateChart()
+        }
+    }
     private var currentDate: Date = Date()
     private let monthLabel = UILabel()
     private var datesWithEntries: Set<DateComponents> = []
-    
+    private var chartHostingController: UIHostingController<BarChart>?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -98,19 +103,23 @@ class ChartViewController: UIViewController {
             monthLabel.trailingAnchor.constraint(equalTo: nextMonthButton.leadingAnchor, constant: -10)
         ])
         
-        let chartHostingController = UIHostingController(rootView: BarChart(data: weeklyData))
-        addChild(chartHostingController)
-        chartHostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(chartHostingController.view)
+        chartHostingController = UIHostingController(rootView: BarChart(data: weeklyData))
+        addChild(chartHostingController!)
+        chartHostingController!.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(chartHostingController!.view)
         
         NSLayoutConstraint.activate([
-            chartHostingController.view.topAnchor.constraint(equalTo: prevMonthButton.bottomAnchor, constant: 10),
-            chartHostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            chartHostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            chartHostingController.view.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6),
+            chartHostingController!.view.topAnchor.constraint(equalTo: prevMonthButton.bottomAnchor, constant: 10),
+            chartHostingController!.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            chartHostingController!.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            chartHostingController!.view.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6),
         ])
         
-        chartHostingController.didMove(toParent: self)
+        chartHostingController!.didMove(toParent: self)
+    }
+    
+    private func updateChart() {
+        chartHostingController?.rootView = BarChart(data: weeklyData)
     }
     
     @objc private func navigateBack() {
@@ -165,10 +174,9 @@ class ChartViewController: UIViewController {
                 let components = currentCalendar.dateComponents([.year, .month, .day], from: date)
                 print("Parsed DateComponents: \(components)") // Debugging statement
                 self.datesWithEntries.insert(components)
-            } else {
-                //print("Failed to parse date: \(entry["date"] ?? "Unknown")") // Debugging statement
             }
         }
+        
         let startDateComponents = calendar.dateComponents([.year, .month, .day], from: currentDate)
         guard let startDate = calendar.date(from: startDateComponents),
               let endDate = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startDate) else {
@@ -186,7 +194,7 @@ class ChartViewController: UIViewController {
         // Group data by week
         for entry in dataArray {
             if let dateString = entry["date"] as? String,
-               let date = ISO8601DateFormatter().date(from: dateString),
+               let date = dateFormatter.date(from: dateString),
                calendar.isDate(date, equalTo: month, toGranularity: .month) {
                 let weekOfMonth = calendar.component(.weekOfMonth, from: date)
                 let duration = entry["duration"] as? Double ?? 0.0
@@ -195,31 +203,17 @@ class ChartViewController: UIViewController {
         }
         
         // Populate weeklyData
-        weeklyData.removeAll()
+        var newWeeklyData: [WeeklyMeditationData] = []
         for week in 1...numberOfWeeks {
             let duration = groupedData[week] ?? 0.0
-            weeklyData.append(WeeklyMeditationData(week: "Week \(week)", duration: duration))
-            print("Week \(week) - Duration: \(duration) minutes") // Debugging statement
+            newWeeklyData.append(WeeklyMeditationData(week: "Week \(week)", duration: duration))
         }
         
         // Summarize total minutes for the month
-        let totalMinutes = weeklyData.reduce(0) { $0 + $1.duration }
-        print("Total meditation minutes for \(formattedMonth(month)): \(totalMinutes) minutes")
+        let totalMinutes = newWeeklyData.reduce(0) { $0 + $1.duration }
         
-        // Update the chart view with the fetched data
-        let chartHostingController = UIHostingController(rootView: BarChart(data: weeklyData))
-        addChild(chartHostingController)
-        chartHostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(chartHostingController.view)
-        
-        NSLayoutConstraint.activate([
-            chartHostingController.view.topAnchor.constraint(equalTo: monthLabel.bottomAnchor, constant: 10),
-            chartHostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            chartHostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            chartHostingController.view.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6),
-        ])
-        
-        chartHostingController.didMove(toParent: self)
+        // Update the data
+        self.weeklyData = newWeeklyData
     }
 
     private func formattedMonth(_ date: Date) -> String {
