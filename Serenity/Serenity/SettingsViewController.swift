@@ -1,3 +1,10 @@
+//
+ //  SettingsViewController.swift
+ //  Serenity
+ //
+ //  Created by Tammy Nguyen on 5/27/24.
+ //
+
 import UIKit
 import UserNotifications
 
@@ -222,20 +229,55 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     @objc private func pushNotificationsSwitchChanged(_ sender: UISwitch) {
         let isOn = sender.isOn
-        datePicker.isHidden = !isOn
-        repeatLabel.isHidden = !isOn
-        repeatPicker.isHidden = !isOn
-        saveRepeatButton.isHidden = !isOn
-        UserDefaults.standard.set(isOn, forKey: "pushNotificationsEnabled")
         
-        if (!isOn) {
+        if isOn {
+            UNUserNotificationCenter.current().getNotificationSettings { settings in
+                DispatchQueue.main.async {
+                    if settings.authorizationStatus == .notDetermined {
+                        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+                            DispatchQueue.main.async {
+                                if granted {
+                                    self.showNotificationSettings()
+                                    UserDefaults.standard.set(true, forKey: self.pushNotificationsEnabledKey)
+                                } else {
+                                    sender.setOn(false, animated: true)
+                                    self.showAlert(message: "Notifications permission is required.")
+                                }
+                            }
+                        }
+                    } else if settings.authorizationStatus == .denied {
+                        sender.setOn(false, animated: true)
+                        self.showAlert(message: "Notifications permission is required.")
+                    } else {
+                        self.showNotificationSettings()
+                        UserDefaults.standard.set(true, forKey: self.pushNotificationsEnabledKey)
+                    }
+                }
+            }
+        } else {
+            hideNotificationSettings()
+            UserDefaults.standard.set(false, forKey: pushNotificationsEnabledKey)
             UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
         }
     }
     
+    private func showNotificationSettings() {
+        datePicker.isHidden = false
+        repeatLabel.isHidden = false
+        repeatPicker.isHidden = false
+        saveRepeatButton.isHidden = false
+    }
+    
+    private func hideNotificationSettings() {
+        datePicker.isHidden = true
+        repeatLabel.isHidden = true
+        repeatPicker.isHidden = true
+        saveRepeatButton.isHidden = true
+    }
+    
     @objc private func notificationsTimeChanged(_ sender: UIDatePicker) {
         scheduleNotification(at: sender.date, frequency: selectedFrequency)
-        UserDefaults.standard.set(sender.date, forKey: "notificationTime")
+        UserDefaults.standard.set(sender.date, forKey: notificationTimeKey)
     }
     
     private func scheduleNotification(at date: Date, frequency: String) {
@@ -357,14 +399,14 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     }
     
     private func restoreSettings() {
-        let isPushNotificationsEnabled = UserDefaults.standard.bool(forKey: "pushNotificationsEnabled")
+        let isPushNotificationsEnabled = UserDefaults.standard.bool(forKey: pushNotificationsEnabledKey)
         pushNotificationsSwitch.isOn = isPushNotificationsEnabled
         datePicker.isHidden = !isPushNotificationsEnabled
         repeatLabel.isHidden = !isPushNotificationsEnabled
         repeatPicker.isHidden = !isPushNotificationsEnabled
         saveRepeatButton.isHidden = !isPushNotificationsEnabled
         
-        if let notificationTime = UserDefaults.standard.object(forKey: "notificationTime") as? Date {
+        if let notificationTime = UserDefaults.standard.object(forKey: notificationTimeKey) as? Date {
             datePicker.date = notificationTime
         }
         
