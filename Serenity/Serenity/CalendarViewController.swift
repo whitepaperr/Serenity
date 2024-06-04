@@ -23,7 +23,6 @@ class CalendarViewController: UIViewController {
         setupViews()
         createCalendar()
         setupButtons()
-        setupSwipeBackGesture()
         fetchData()
     }
     

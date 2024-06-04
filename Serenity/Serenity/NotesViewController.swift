@@ -25,8 +25,8 @@ class NotesViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+        setupToolbar()
         fetchAndDisplayData()
-        setupSwipeBackGesture()
     }
     
     private func setupViews() {
@@ -92,6 +92,21 @@ class NotesViewController: UIViewController {
             textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             textView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.67)
         ])
+    }
+    
+    private func setupToolbar() {
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(dismissKeyboard))
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        toolbar.setItems([flexSpace, doneButton], animated: false)
+        textView.inputAccessoryView = toolbar
+    }
+    
+    @objc private func dismissKeyboard() {
+        textView.resignFirstResponder()
     }
     
     private func addButtons() {
@@ -231,5 +246,8 @@ class NotesViewController: UIViewController {
         
         saveButton?.removeTarget(self, action: #selector(saveEditedNote), for: .touchUpInside)
         saveButton?.addTarget(self, action: #selector(saveNote), for: .touchUpInside)
+        
+        // Dismiss the keyboard
+        dismissKeyboard()
     }
 }

@@ -45,7 +45,6 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         repeatPicker.dataSource = self
         restoreSettings()
         fetchUserInfo()
-        setupSwipeBackGesture()
     }
     
     private func setupViews() {

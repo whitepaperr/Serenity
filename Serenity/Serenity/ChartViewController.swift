@@ -46,7 +46,6 @@ class ChartViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        setupSwipeBackGesture()
         fetchDataAndUpdateChart(for: currentDate)
     }
     
