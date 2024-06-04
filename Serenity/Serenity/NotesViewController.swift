@@ -85,13 +85,34 @@ class NotesViewController: UIViewController {
         NSLayoutConstraint.activate([
             dateLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             dateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            dateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            
-            textView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 30),
-            textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            textView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.67)
+            dateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
+        
+        if let saveButton = saveButton, let editButton = editButton {
+            NSLayoutConstraint.activate([
+                saveButton.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 20),
+                saveButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -10),
+                saveButton.widthAnchor.constraint(equalToConstant: 100),
+                saveButton.heightAnchor.constraint(equalToConstant: 50),
+                
+                editButton.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 20), //changed so its below the dateLabel
+                editButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 10),
+                editButton.widthAnchor.constraint(equalToConstant: 100),
+                editButton.heightAnchor.constraint(equalToConstant: 50),
+                
+                textView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 90), //changed to 90 so its below the buttons
+                textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                textView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                textView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 90), //changed to 90
+                textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                textView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            ])
+        }
     }
     
     private func setupToolbar() {
@@ -118,17 +139,7 @@ class NotesViewController: UIViewController {
         setupButton(saveButton, title: "Save", color: UIColor(red: 0.31, green: 0.51, blue: 0.75, alpha: 1.00), action: #selector(saveNote))
         setupButton(editButton, title: "Edit", color: UIColor(red: 0.73, green: 0.87, blue: 0.97, alpha: 1.00), action: #selector(editNote))
         
-        NSLayoutConstraint.activate([
-            saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
-            saveButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -10),
-            saveButton.widthAnchor.constraint(equalToConstant: 100),
-            saveButton.heightAnchor.constraint(equalToConstant: 50),
-            
-            editButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
-            editButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 10),
-            editButton.widthAnchor.constraint(equalToConstant: 100),
-            editButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        setupConstraints()
     }
     
     @objc private func navigateBack() {
