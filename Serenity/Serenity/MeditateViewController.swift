@@ -162,7 +162,7 @@ class MeditateViewController: UIViewController, UIPickerViewDataSource, UIPicker
             dateLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
             // Timer Img
-            timerImageView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 20),
+            timerImageView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 10),
             timerImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 4),
             timerImageView.widthAnchor.constraint(equalToConstant: 300),
             timerImageView.heightAnchor.constraint(equalToConstant: 300),

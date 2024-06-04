@@ -79,8 +79,8 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoImageView.widthAnchor.constraint(equalToConstant: 300),
-            logoImageView.heightAnchor.constraint(equalToConstant: 300),
+            logoImageView.widthAnchor.constraint(equalToConstant: 200),
+            logoImageView.heightAnchor.constraint(equalToConstant: 200),
 
             idTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 30),
             idTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
