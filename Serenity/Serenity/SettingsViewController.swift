@@ -1,10 +1,3 @@
-//
-//  SettingsViewController.swift
-//  Serenity
-//
-//  Created by Tammy Nguyen on 5/27/24.
-//
-
 import UIKit
 import UserNotifications
 
@@ -311,16 +304,8 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     }
     
     @objc private func saveRepeat() {
-        UserDefaults.standard.set(selectedFrequency, forKey: "repeatFrequency")
-        NetworkManager.shared.updateRepeatFrequency(frequency: selectedFrequency) { success in
-            DispatchQueue.main.async {
-                if success {
-                    self.showAlert(message: "Repeat frequency saved successfully")
-                } else {
-                    self.showAlert(message: "Failed to save repeat frequency")
-                }
-            }
-        }
+        UserDefaults.standard.set(selectedFrequency, forKey: repeatFrequencyKey)
+        showAlert(message: "Repeat frequency saved successfully")
     }
     
     private func showAlert(message: String) {
@@ -383,7 +368,7 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
             datePicker.date = notificationTime
         }
         
-        if let frequency = UserDefaults.standard.string(forKey: "repeatFrequency") {
+        if let frequency = UserDefaults.standard.string(forKey: repeatFrequencyKey) {
             if let index = frequencies.firstIndex(of: frequency) {
                 repeatPicker.selectRow(index, inComponent: 0, animated: false)
                 selectedFrequency = frequency
