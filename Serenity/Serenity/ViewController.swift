@@ -77,12 +77,12 @@ class ViewController: UIViewController {
         signUpTransitionButton.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120),
+            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.widthAnchor.constraint(equalToConstant: 200),
             logoImageView.heightAnchor.constraint(equalToConstant: 200),
 
-            idTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 30),
+            idTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 20),
             idTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             idTextField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
             idTextField.heightAnchor.constraint(equalToConstant: 40),
